@@ -8,12 +8,12 @@
 
   .top {
     h2 {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       font-weight: 600;
     }
 
     p {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       color: #999;
       padding: 0.5rem 0;
     }
@@ -21,9 +21,9 @@
 
   .bottom {
     p {
-      font-size: 1rem;
-      line-height: 1.4rem;
-      padding-bottom: 1rem;
+      font-size: 1.1rem;
+      line-height: 1.8rem;
+      padding: 0.5rem 0;
 
       code {
         color: rgb(138, 24, 30);
@@ -50,6 +50,7 @@
 
       li {
         margin: 0.8rem 0 1rem;
+        font-size: 1.1rem;
       }
     }
 
