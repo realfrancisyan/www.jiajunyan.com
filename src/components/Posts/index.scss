@@ -1,2 +1,62 @@
 .posts-container {
+  padding: 1rem 0;
+}
+
+.post {
+  border-top: 1px solid #e5e5e5;
+  padding: 1rem 0;
+
+  .top {
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: #999;
+      padding: 0.5rem 0;
+    }
+  }
+
+  .bottom {
+    p {
+      font-size: 1rem;
+      line-height: 1.4rem;
+      padding-bottom: 1rem;
+
+      code {
+        color: rgb(138, 24, 30);
+      }
+
+      img {
+        width: 100%;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+
+    p + ol,
+    p + ul {
+      margin-top: -0.8rem;
+    }
+
+    ol,
+    ul {
+      list-style-type: disc;
+      padding-left: 2rem;
+
+      li {
+        margin: 0.8rem 0 1rem;
+      }
+    }
+
+    a,
+    a code {
+      font-weight: 600;
+      color: #000;
+    }
+  }
 }
