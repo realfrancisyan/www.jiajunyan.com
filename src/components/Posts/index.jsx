@@ -147,6 +147,7 @@ class Posts extends React.Component {
                           };
                           return (
                             <img
+                              className="post-img"
                               src={props.src}
                               alt={props.title}
                               onClick={showLightBox}
