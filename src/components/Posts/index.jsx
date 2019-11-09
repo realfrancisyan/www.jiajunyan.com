@@ -4,6 +4,7 @@ import Skeleton from '../Skeleton';
 import { getPosts } from '../../api/talk';
 import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
+import bindAll from 'lodash.bindall';
 const ReactMarkdown = require('react-markdown');
 
 const SkeletonContainer = props => {
@@ -31,6 +32,8 @@ class Posts extends React.Component {
       modalIsOpen: false,
       images: []
     };
+
+    bindAll(this, ['toggleModal']);
   }
 
   // 获取屏幕高度
@@ -63,9 +66,9 @@ class Posts extends React.Component {
     getPosts().then(onSuccess);
   }
 
-  toggleModal = () => {
+  toggleModal() {
     this.setState(state => ({ modalIsOpen: !state.modalIsOpen }));
-  };
+  }
 
   componentDidMount() {
     this.handleGetInnerHeight();

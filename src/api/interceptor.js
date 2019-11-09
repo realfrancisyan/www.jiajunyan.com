@@ -1,5 +1,5 @@
 import axios from 'axios'
-import constants from '../common/constants'
+// import constants from '../common/constants'
 
 // 拦截 request ，设置全局请求为 ajax 请求
 axios.interceptors.request.use(config => {
@@ -8,6 +8,11 @@ axios.interceptors.request.use(config => {
   config.headers['Access-Control-Allow-Origin'] = '*'
   config.headers['Content-Type'] = 'application/json'
   config.headers['X-Requested-With'] = 'XMLHttpRequest'
+
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`
+  }
 
   return config
 });
@@ -18,9 +23,15 @@ axios.interceptors.response.use(
     const { data } = res
 
     // 全局设置错误提示
-    switch (data.result) {
-      case constants.STATUS.FAILURE:
-        alert(data.message)
+    switch (data.status) {
+      // token 失效
+      case 403:
+        const token = localStorage.getItem('token')
+        if (token) {
+          localStorage.removeItem('token')
+        }
+        window.location.href = '/auth'
+        alert(data.data)
         break
 
       default:

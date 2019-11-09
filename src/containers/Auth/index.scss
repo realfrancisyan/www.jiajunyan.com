@@ -25,6 +25,13 @@
       background: rgb(119, 180, 79);
       color: #fff;
       border: none;
+
+      &:disabled,
+      &[disabled] {
+        background-color: #cccccc;
+        color: #666666;
+        cursor: not-allowed;
+      }
     }
 
     p {

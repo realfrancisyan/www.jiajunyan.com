@@ -1,6 +1,6 @@
 export default {
  STATUS: {
-  SUCCESS: 'Success',
-  FAILURE: 'Failure'
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL'
  }
 }
