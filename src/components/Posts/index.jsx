@@ -7,7 +7,10 @@ import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
 import PlusIcon from './images/plus.png';
 import PostModal from '../PostModal';
+import openSocket from 'socket.io-client';
 const ReactMarkdown = require('react-markdown');
+
+const socket = openSocket.connect('http://localhost:4000');
 
 const SkeletonContainer = props => {
   if (props.isFirstLoad) {
@@ -33,10 +36,19 @@ class Posts extends React.Component {
       posts: [],
       modalIsOpen: false,
       images: [],
-      postModalIsOpen: false
+      postModalIsOpen: false,
+      isTop: true,
+      hasNewPost: false,
+      token: ''
     };
 
-    bindAll(this, ['toggleModal', 'handleTogglePostModal', 'handleGetList']);
+    bindAll(this, [
+      'toggleModal',
+      'handleTogglePostModal',
+      'handleGetList',
+      'handleWatchScrollPosition',
+      'handleRefresh'
+    ]);
   }
 
   // 获取屏幕高度
@@ -86,6 +98,14 @@ class Posts extends React.Component {
     }
   }
 
+  handleRefresh() {
+    this.setState({
+      hasNewPost: false
+    });
+    this.handleGetList();
+    window.scrollTo(0, 0);
+  }
+
   // 创建文章 modal
   handleTogglePostModal() {
     this.setState(state => ({ postModalIsOpen: !state.postModalIsOpen }));
@@ -94,6 +114,39 @@ class Posts extends React.Component {
   componentDidMount() {
     this.handleGetInnerHeight();
     this.handleGetList();
+    this.handleWatchScrollPosition();
+    this.handleSetUpWebSocket();
+    this.handleCheckToken();
+  }
+
+  // 建立 web socket 连接
+  handleSetUpWebSocket() {
+    // listen for events
+    socket.on('newPost', data => {
+      // 非登录用户才会显示新文章按钮
+      const token = this.handleCheckToken();
+      if (!token) {
+        this.setState({
+          hasNewPost: true
+        });
+      }
+    });
+  }
+
+  handleCheckToken() {
+    const token = localStorage.getItem('token');
+    this.setState({
+      token
+    });
+    return token;
+  }
+
+  handleWatchScrollPosition() {
+    window.onscroll = () => {
+      this.setState({
+        isTop: window.pageYOffset === 0
+      });
+    };
   }
 
   componentWillUnmount() {
@@ -121,11 +174,13 @@ class Posts extends React.Component {
                       <h2>{item.title}</h2>
                       <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
                     </div>
-                    <div className="right">
-                      <span onClick={() => this.handleDeletePost(item)}>
-                        删除
-                      </span>
-                    </div>
+                    {this.state.token ? (
+                      <div className="right">
+                        <span onClick={() => this.handleDeletePost(item)}>
+                          删除
+                        </span>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="bottom">
                     <ReactMarkdown
@@ -158,9 +213,11 @@ class Posts extends React.Component {
           </div>
         ) : null}
 
-        <div className="add-post" onClick={this.handleTogglePostModal}>
-          <img src={PlusIcon} alt="add post" />
-        </div>
+        {this.state.token ? (
+          <div className="add-post" onClick={this.handleTogglePostModal}>
+            <img src={PlusIcon} alt="add post" />
+          </div>
+        ) : null}
 
         {this.state.postModalIsOpen ? (
           <PostModal
@@ -176,6 +233,16 @@ class Posts extends React.Component {
             </Modal>
           ) : null}
         </ModalGateway>
+
+        {this.state.hasNewPost ? (
+          <h4
+            className="new-post"
+            style={{ top: this.state.isTop ? '10rem' : '5rem' }}
+            onClick={this.handleRefresh}
+          >
+            有新文章
+          </h4>
+        ) : null}
       </div>
     );
   }

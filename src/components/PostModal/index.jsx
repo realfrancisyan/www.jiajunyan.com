@@ -3,6 +3,9 @@ import './index.scss';
 import PlusIcon from '../Posts/images/plus.png';
 import bindAll from 'lodash.bindall';
 import { createPost } from '../../api/talk';
+import openSocket from 'socket.io-client';
+
+const socket = openSocket.connect('http://localhost:4000');
 
 class PostModal extends React.Component {
   constructor(props) {
@@ -40,6 +43,8 @@ class PostModal extends React.Component {
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
         this.handleToggleModal();
+        this.handleGetList();
+        this.handleSetNotification();
       }
     };
 
@@ -53,9 +58,13 @@ class PostModal extends React.Component {
         this.setState({
           isSubmit: false
         });
-
-        this.handleGetList();
       });
+  }
+
+  handleSetNotification() {
+    socket.emit('newPost', {
+      newPost: true
+    });
   }
 
   handleToggleModal() {
@@ -69,6 +78,12 @@ class PostModal extends React.Component {
     if (typeof this.props.handleGetList === 'function') {
       this.props.handleGetList();
     }
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    };
   }
 
   render() {
