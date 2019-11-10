@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
 import Skeleton from '../Skeleton';
-import { getPosts } from '../../api/talk';
+import { getPosts, deletePost } from '../../api/talk';
 import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
@@ -36,7 +36,7 @@ class Posts extends React.Component {
       postModalIsOpen: false
     };
 
-    bindAll(this, ['toggleModal', 'handleTogglePostModal']);
+    bindAll(this, ['toggleModal', 'handleTogglePostModal', 'handleGetList']);
   }
 
   // 获取屏幕高度
@@ -78,7 +78,11 @@ class Posts extends React.Component {
     const r = window.confirm(`确认删除${post.title}？`);
     if (r) {
       // 删除
-      console.log(post.id);
+      deletePost({ id: post.id }).then(res => {
+        if (res.message === 'SUCCESS') {
+          this.handleGetList();
+        }
+      });
     }
   }
 
@@ -161,6 +165,7 @@ class Posts extends React.Component {
         {this.state.postModalIsOpen ? (
           <PostModal
             handleTogglePostModal={this.handleTogglePostModal}
+            handleGetList={this.handleGetList}
           ></PostModal>
         ) : null}
 

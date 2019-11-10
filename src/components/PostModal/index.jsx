@@ -2,13 +2,15 @@ import React from 'react';
 import './index.scss';
 import PlusIcon from '../Posts/images/plus.png';
 import bindAll from 'lodash.bindall';
+import { createPost } from '../../api/talk';
 
 class PostModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
-      content: ''
+      content: '',
+      isSubmit: false
     };
 
     bindAll(this, [
@@ -33,12 +35,39 @@ class PostModal extends React.Component {
 
   handleSubmit() {
     const { title, content } = this.state;
-    console.log(title, content);
+    if (!title || !content) return;
+
+    const onSuccess = res => {
+      if (res.message === 'SUCCESS') {
+        this.handleToggleModal();
+      }
+    };
+
+    this.setState({
+      isSubmit: true
+    });
+
+    createPost({ title, content })
+      .then(onSuccess)
+      .finally(() => {
+        this.setState({
+          isSubmit: false
+        });
+
+        this.handleGetList();
+      });
   }
 
   handleToggleModal() {
     if (typeof this.props.handleTogglePostModal === 'function') {
       this.props.handleTogglePostModal();
+    }
+  }
+
+  // 刷新列表，从父组件调用
+  handleGetList() {
+    if (typeof this.props.handleGetList === 'function') {
+      this.props.handleGetList();
     }
   }
 
@@ -64,7 +93,9 @@ class PostModal extends React.Component {
           >
             提交
           </button>
-          <p>正在提交...</p>
+          <p style={{ opacity: this.state.isSubmit ? '1' : '0' }}>
+            正在提交...
+          </p>
         </div>
 
         <div className="close" onClick={this.handleToggleModal}>
