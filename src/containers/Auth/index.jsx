@@ -44,10 +44,12 @@ class Auth extends React.Component {
     if (!username || !password) return;
 
     const onSuccess = res => {
-      const token = res.data;
-      // 保存 token 到 localStorage
-      localStorage.setItem('token', token);
-      this.props.history.push('/');
+      if (res.message === 'SUCCESS') {
+        const token = res.data;
+        // 保存 token 到 localStorage
+        localStorage.setItem('token', token);
+        this.props.history.push('/');
+      }
     };
 
     this.setState({
@@ -61,6 +63,12 @@ class Auth extends React.Component {
           isSubmit: false
         });
       });
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    };
   }
 
   render() {
@@ -86,9 +94,7 @@ class Auth extends React.Component {
           >
             登录
           </button>
-          <p style={{ opacity: this.state.isSubmit ? '100%' : '0' }}>
-            登录中...
-          </p>
+          <p style={{ opacity: this.state.isSubmit ? '1' : '0' }}>登录中...</p>
         </div>
       </div>
     );

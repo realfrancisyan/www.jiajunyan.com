@@ -5,6 +5,8 @@ import { getPosts } from '../../api/talk';
 import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
+import PlusIcon from './images/plus.png';
+import PostModal from '../PostModal';
 const ReactMarkdown = require('react-markdown');
 
 const SkeletonContainer = props => {
@@ -30,10 +32,11 @@ class Posts extends React.Component {
       skeleton: [],
       posts: [],
       modalIsOpen: false,
-      images: []
+      images: [],
+      postModalIsOpen: false
     };
 
-    bindAll(this, ['toggleModal']);
+    bindAll(this, ['toggleModal', 'handleTogglePostModal']);
   }
 
   // 获取屏幕高度
@@ -66,13 +69,33 @@ class Posts extends React.Component {
     getPosts().then(onSuccess);
   }
 
+  // 图片预览 modal
   toggleModal() {
     this.setState(state => ({ modalIsOpen: !state.modalIsOpen }));
+  }
+
+  handleDeletePost(post) {
+    const r = window.confirm(`确认删除${post.title}？`);
+    if (r) {
+      // 删除
+      console.log(post.id);
+    }
+  }
+
+  // 创建文章 modal
+  handleTogglePostModal() {
+    this.setState(state => ({ postModalIsOpen: !state.postModalIsOpen }));
   }
 
   componentDidMount() {
     this.handleGetInnerHeight();
     this.handleGetList();
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    };
   }
 
   render() {
@@ -90,8 +113,15 @@ class Posts extends React.Component {
               return (
                 <div className="post" key={index}>
                   <div className="top">
-                    <h2>{item.title}</h2>
-                    <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
+                    <div className="left">
+                      <h2>{item.title}</h2>
+                      <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
+                    </div>
+                    <div className="right">
+                      <span onClick={() => this.handleDeletePost(item)}>
+                        删除
+                      </span>
+                    </div>
                   </div>
                   <div className="bottom">
                     <ReactMarkdown
@@ -122,6 +152,16 @@ class Posts extends React.Component {
               );
             })}
           </div>
+        ) : null}
+
+        <div className="add-post" onClick={this.handleTogglePostModal}>
+          <img src={PlusIcon} alt="add post" />
+        </div>
+
+        {this.state.postModalIsOpen ? (
+          <PostModal
+            handleTogglePostModal={this.handleTogglePostModal}
+          ></PostModal>
         ) : null}
 
         <ModalGateway>

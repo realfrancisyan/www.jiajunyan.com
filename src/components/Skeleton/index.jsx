@@ -51,6 +51,12 @@ class Skeleton extends React.Component {
     this.handleGetInnerWidth();
   }
 
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
+
   render() {
     return (
       <div className="home-container">
