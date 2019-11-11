@@ -9,6 +9,8 @@ import PlusIcon from './images/plus.png';
 import PostModal from '../PostModal';
 import openSocket from 'socket.io-client';
 import { parseToken } from '../../common';
+import InfiniteScroll from 'react-infinite-scroller';
+import throttle from 'lodash.throttle';
 const ReactMarkdown = require('react-markdown');
 
 const socket = openSocket.connect('http://localhost:4000');
@@ -40,7 +42,12 @@ class Posts extends React.Component {
       postModalIsOpen: false,
       isTop: true,
       hasNewPost: false,
-      token: ''
+      token: '',
+      hasMore: true, // 是否有更多文章
+      page: {
+        pageNo: 1,
+        pageSize: 2
+      }
     };
 
     bindAll(this, [
@@ -50,6 +57,8 @@ class Posts extends React.Component {
       'handleWatchScrollPosition',
       'handleRefresh'
     ]);
+
+    this.handleGetList = throttle(this.handleGetList, 500);
   }
 
   // 获取屏幕高度
@@ -70,16 +79,40 @@ class Posts extends React.Component {
   }
 
   handleGetList() {
+    let { pageNo, pageSize } = this.state.page;
+    const params = {
+      pageNo,
+      pageSize
+    };
+
+    if (this.isLoading) return;
+    this.isLoading = true;
+
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
-        this.setState({
+        if (!this.state.hasMore) return;
+        if (!res.data.length) {
+          this.setState({
+            hasMore: false
+          });
+          return;
+        }
+        this.setState(prevState => ({
+          page: {
+            ...prevState.page,
+            pageNo: pageNo + 1
+          },
           isFirstLoad: false,
-          posts: res.data
-        });
+          posts: [...this.state.posts, ...res.data]
+        }));
       }
     };
 
-    getPosts().then(onSuccess);
+    getPosts(params)
+      .then(onSuccess)
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
 
   // 图片预览 modal
@@ -118,6 +151,10 @@ class Posts extends React.Component {
     this.handleWatchScrollPosition();
     this.handleSetUpWebSocket();
     this.handleCheckToken();
+
+    // 添加函数节流控制
+    window.addEventListener('scroll', this.handleGetList);
+    window.addEventListener('resize', this.handleGetList);
   }
 
   // 建立 web socket 连接
@@ -151,6 +188,10 @@ class Posts extends React.Component {
   }
 
   componentWillUnmount() {
+    // 移除函数节流
+    window.removeEventListener('scroll', this.handleGetList);
+    window.removeEventListener('resize', this.handleGetList);
+
     this.setState = (state, callback) => {
       return;
     };
@@ -158,6 +199,12 @@ class Posts extends React.Component {
 
   render() {
     const { modalIsOpen } = this.state;
+    const loader = (
+      <div className="loader" key={0}>
+        正在加载...
+      </div>
+    );
+
     return (
       <div className="posts-container">
         <SkeletonContainer
@@ -167,50 +214,58 @@ class Posts extends React.Component {
 
         {!this.state.isFirstLoad ? (
           <div className="posts">
-            {this.state.posts.map((item, index) => {
-              return (
-                <div className="post" key={index}>
-                  <div className="top">
-                    <div className="left">
-                      <h2>{item.title}</h2>
-                      <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
-                    </div>
-                    {this.state.token ? (
-                      <div className="right">
-                        <span onClick={() => this.handleDeletePost(item)}>
-                          删除
-                        </span>
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={this.handleGetList}
+              hasMore={this.state.hasMore}
+              useWindow={false}
+              loader={loader}
+            >
+              {this.state.posts.map((item, index) => {
+                return (
+                  <div className="post" key={index}>
+                    <div className="top">
+                      <div className="left">
+                        <h2>{item.title}</h2>
+                        <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
                       </div>
-                    ) : null}
+                      {this.state.token ? (
+                        <div className="right">
+                          <span onClick={() => this.handleDeletePost(item)}>
+                            删除
+                          </span>
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="bottom">
+                      <ReactMarkdown
+                        className={'markdown'}
+                        source={item.body}
+                        renderers={{
+                          image: props => {
+                            const images = [{ src: props.src }];
+                            const showLightBox = () => {
+                              this.setState({
+                                images,
+                                modalIsOpen: !modalIsOpen
+                              });
+                            };
+                            return (
+                              <img
+                                className="post-img"
+                                src={props.src}
+                                alt={props.title}
+                                onClick={showLightBox}
+                              />
+                            );
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="bottom">
-                    <ReactMarkdown
-                      className={'markdown'}
-                      source={item.body}
-                      renderers={{
-                        image: props => {
-                          const images = [{ src: props.src }];
-                          const showLightBox = () => {
-                            this.setState({
-                              images,
-                              modalIsOpen: !modalIsOpen
-                            });
-                          };
-                          return (
-                            <img
-                              className="post-img"
-                              src={props.src}
-                              alt={props.title}
-                              onClick={showLightBox}
-                            />
-                          );
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </InfiniteScroll>
           </div>
         ) : null}
 
