@@ -8,6 +8,7 @@ import bindAll from 'lodash.bindall';
 import PlusIcon from './images/plus.png';
 import PostModal from '../PostModal';
 import openSocket from 'socket.io-client';
+import { parseToken } from '../../common';
 const ReactMarkdown = require('react-markdown');
 
 const socket = openSocket.connect('http://localhost:4000');
@@ -134,7 +135,7 @@ class Posts extends React.Component {
   }
 
   handleCheckToken() {
-    const token = localStorage.getItem('token');
+    const { token } = parseToken();
     this.setState({
       token
     });

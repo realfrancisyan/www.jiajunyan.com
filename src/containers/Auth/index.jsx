@@ -45,9 +45,9 @@ class Auth extends React.Component {
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
-        const token = res.data;
+        const { data } = res;
         // 保存 token 到 localStorage
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', JSON.stringify(data));
         this.props.history.push('/');
       }
     };

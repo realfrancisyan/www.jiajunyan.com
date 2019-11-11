@@ -3,11 +3,13 @@ import './index.scss';
 import Header from '../../components/Header';
 import Posts from '../../components/Posts';
 import bindAll from 'lodash.bindall';
+import { parseToken } from '../../common';
 
 const LogOutButton = props => {
   if (props.token) {
     return (
       <div className="logout">
+        <p>欢迎你，{props.user.name}</p>
         <button onClick={props.handleLogOut}>登出</button>
       </div>
     );
@@ -20,7 +22,8 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: ''
+      token: '',
+      user: ''
     };
     bindAll(this, ['handleLogOut']);
     // 添加 ref 到 posts 子组件
@@ -28,9 +31,10 @@ class Home extends React.Component {
   }
 
   handleGetToken() {
-    const token = localStorage.getItem('token');
+    const { token, user } = parseToken();
     this.setState({
-      token
+      token,
+      user
     });
   }
 
@@ -55,6 +59,7 @@ class Home extends React.Component {
         <LogOutButton
           handleLogOut={this.handleLogOut}
           token={this.state.token}
+          user={this.state.user}
         ></LogOutButton>
       </div>
     );
