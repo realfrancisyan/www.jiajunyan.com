@@ -46,7 +46,7 @@ class Posts extends React.Component {
       hasMore: true, // 是否有更多文章
       page: {
         pageNo: 1,
-        pageSize: 2
+        pageSize: 10
       }
     };
 
@@ -85,12 +85,12 @@ class Posts extends React.Component {
       pageSize
     };
 
+    if (!this.state.hasMore) return;
     if (this.isLoading) return;
     this.isLoading = true;
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
-        if (!this.state.hasMore) return;
         if (!res.data.length) {
           this.setState({
             hasMore: false
