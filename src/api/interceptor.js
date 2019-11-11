@@ -1,5 +1,5 @@
-import axios from 'axios'
-// import constants from '../common/constants'
+import axios from 'axios';
+import { parseToken } from '../common';
 
 // const CODEMESSAGE = {
 //   200: '服务器成功返回请求的数据。',
@@ -21,47 +21,52 @@ import axios from 'axios'
 
 // 拦截 request ，设置全局请求为 ajax 请求
 axios.interceptors.request.use(config => {
-  config.withCredentials = true
+  config.timeout = 40 * 1000; // 40 秒超时
+  config.withCredentials = true;
 
-  config.headers['Access-Control-Allow-Origin'] = '*'
-  config.headers['Content-Type'] = 'application/json'
-  config.headers['X-Requested-With'] = 'XMLHttpRequest'
+  config.headers['Access-Control-Allow-Origin'] = '*';
+  config.headers['Content-Type'] = 'application/json';
+  config.headers['X-Requested-With'] = 'XMLHttpRequest';
 
-  const token = localStorage.getItem('token')
+  let { token } = parseToken();
   if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
 
-  return config
+  return config;
 });
 
 // 拦截响应 response，并做一些错误处理
 axios.interceptors.response.use(
   res => {
-    const { data } = res
+    const { data } = res;
 
     // 全局设置错误提示
     switch (data.status) {
       // token 失效
       case 403:
-        alert(data.data)
-        break
+        alert(data.data);
+        break;
       case 401:
-        const token = localStorage.getItem('token')
+        const { token } = parseToken();
         if (token) {
-          localStorage.removeItem('token')
+          localStorage.removeItem('token');
         }
-        window.location.href = '/auth'
-        alert(data.data)
-        return
+        window.location.href = '/auth';
+        alert(data.data);
+        return;
 
       default:
     }
 
-    return data
+    return data;
   },
   err => {
     // 这里是返回状态码不为 200 时候的错误处理
+    if (err.code === 'ECONNABORTED') {
+      console.log('请求超时');
+      // 引入 redux，显示状态
+    }
     return Promise.reject(err);
   }
 );
