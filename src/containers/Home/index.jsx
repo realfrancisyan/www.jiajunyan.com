@@ -23,6 +23,7 @@ class Home extends React.Component {
       token: ''
     };
     bindAll(this, ['handleLogOut']);
+    // 添加 ref 到 posts 子组件
     this.postsComponent = React.createRef();
   }
 
@@ -35,6 +36,7 @@ class Home extends React.Component {
 
   handleLogOut() {
     localStorage.removeItem('token');
+    // 登出后，调用子组件，刷新 token，移除编辑态
     this.postsComponent.handleCheckToken();
     this.setState({
       token: ''
