@@ -43,6 +43,7 @@ class PostModal extends React.Component {
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
+        this.handleReset();
         this.handleToggleModal();
         this.handleGetList();
         this.handleSetNotification();
@@ -78,6 +79,12 @@ class PostModal extends React.Component {
   handleGetList() {
     if (typeof this.props.handleGetList === 'function') {
       this.props.handleGetList();
+    }
+  }
+
+  handleReset() {
+    if (typeof this.props.handleReset === 'function') {
+      this.props.handleReset();
     }
   }
 

@@ -56,7 +56,8 @@ class Posts extends React.Component {
       'handleTogglePostModal',
       'handleGetList',
       'handleWatchScrollPosition',
-      'handleRefresh'
+      'handleRefresh',
+      'handleReset'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 500);
@@ -79,6 +80,20 @@ class Posts extends React.Component {
     });
   }
 
+  // 重置
+  handleReset() {
+    this.setState(prevState => ({
+      page: {
+        ...prevState.page,
+        pageNo: 1
+      },
+      isFirstLoad: true,
+      posts: [],
+      hasMore: true
+    }));
+  }
+
+  // 获取文章列表
   handleGetList() {
     let { pageNo, pageSize } = this.state.page;
     const params = {
@@ -127,6 +142,7 @@ class Posts extends React.Component {
       // 删除
       deletePost({ id: post.id }).then(res => {
         if (res.message === 'SUCCESS') {
+          this.handleReset();
           this.handleGetList();
         }
       });
@@ -280,6 +296,7 @@ class Posts extends React.Component {
           <PostModal
             handleTogglePostModal={this.handleTogglePostModal}
             handleGetList={this.handleGetList}
+            handleReset={this.handleReset}
           ></PostModal>
         ) : null}
 
