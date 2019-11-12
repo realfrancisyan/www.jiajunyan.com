@@ -258,25 +258,25 @@ class Posts extends React.Component {
                       <ReactMarkdown
                         className={'markdown'}
                         source={item.body}
-                        renderers={{
-                          image: props => {
-                            const images = [{ src: props.src }];
-                            const showLightBox = () => {
-                              this.setState({
-                                images,
-                                modalIsOpen: !modalIsOpen
-                              });
-                            };
-                            return (
-                              <img
-                                className="post-img"
-                                src={props.src}
-                                alt={props.title}
-                                onClick={showLightBox}
-                              />
-                            );
-                          }
-                        }}
+                        // renderers={{
+                        //   image: props => {
+                        //     const images = [{ src: props.src }];
+                        //     const showLightBox = () => {
+                        //       this.setState({
+                        //         images,
+                        //         modalIsOpen: !modalIsOpen
+                        //       });
+                        //     };
+                        //     return (
+                        //       <img
+                        //         className="post-img"
+                        //         src={props.src}
+                        //         alt={props.title}
+                        //         onClick={showLightBox}
+                        //       />
+                        //     );
+                        //   }
+                        // }}
                       />
                     </div>
                   </div>
