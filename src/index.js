@@ -4,15 +4,16 @@ import './App.scss';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { Route, Switch, HashRouter } from 'react-router-dom';
 
-ReactDOM.render((
- <BrowserRouter>
-  <Switch>
-   <Route path="/" component={App} />
-  </Switch>
- </BrowserRouter>
-), document.getElementById('root'));
+ReactDOM.render(
+  <HashRouter>
+    <Switch>
+      <Route path="/" component={App} />
+    </Switch>
+  </HashRouter>,
+  document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
@@ -24,8 +25,9 @@ const handleSetFontSize = () => {
   const oHtml = document.getElementsByTagName('html')[0];
   const width = oHtml.clientWidth;
   // 320px的屏幕基准像素为12px
-  oHtml.style.fontSize = window.innerWidth <= 768 ? `${12 * (width / 320)}px` : '16px';
-}
+  oHtml.style.fontSize =
+    window.innerWidth <= 768 ? `${12 * (width / 320)}px` : '16px';
+};
 
 handleSetFontSize();
-window.addEventListener("resize", handleSetFontSize);
+window.addEventListener('resize', handleSetFontSize);

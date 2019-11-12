@@ -4,8 +4,9 @@ import PlusIcon from '../Posts/images/plus.png';
 import bindAll from 'lodash.bindall';
 import { createPost } from '../../api/talk';
 import openSocket from 'socket.io-client';
+import { BASE_URL } from '../../api/url';
 
-const socket = openSocket.connect('http://localhost:4000');
+const socket = openSocket.connect(BASE_URL);
 
 class PostModal extends React.Component {
   constructor(props) {

@@ -11,9 +11,10 @@ import openSocket from 'socket.io-client';
 import { parseToken } from '../../common';
 import InfiniteScroll from 'react-infinite-scroller';
 import throttle from 'lodash.throttle';
+import { BASE_URL } from '../../api/url';
 const ReactMarkdown = require('react-markdown');
 
-const socket = openSocket.connect('http://localhost:4000');
+const socket = openSocket.connect(BASE_URL);
 
 const SkeletonContainer = props => {
   if (props.isFirstLoad) {
