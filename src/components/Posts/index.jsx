@@ -30,6 +30,12 @@ const SkeletonContainer = props => {
   return null;
 };
 
+const loader = (
+  <div className="loader" key={0}>
+    正在加载...
+  </div>
+);
+
 class Posts extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +47,6 @@ class Posts extends React.Component {
       modalIsOpen: false,
       images: [],
       postModalIsOpen: false,
-      isTop: true,
       hasNewPost: false,
       token: '',
       hasMore: true, // 是否有更多文章
@@ -55,7 +60,6 @@ class Posts extends React.Component {
       'toggleModal',
       'handleTogglePostModal',
       'handleGetList',
-      'handleWatchScrollPosition',
       'handleRefresh',
       'handleReset'
     ]);
@@ -161,19 +165,6 @@ class Posts extends React.Component {
   handleTogglePostModal() {
     this.setState(state => ({ postModalIsOpen: !state.postModalIsOpen }));
   }
-
-  componentDidMount() {
-    this.handleGetInnerHeight();
-    this.handleGetList();
-    this.handleWatchScrollPosition();
-    this.handleSetUpWebSocket();
-    this.handleCheckToken();
-
-    // 添加函数节流控制
-    window.addEventListener('scroll', this.handleGetList);
-    window.addEventListener('resize', this.handleGetList);
-  }
-
   // 建立 web socket 连接
   handleSetUpWebSocket() {
     // listen for events
@@ -196,12 +187,15 @@ class Posts extends React.Component {
     return token;
   }
 
-  handleWatchScrollPosition() {
-    window.onscroll = () => {
-      this.setState({
-        isTop: window.pageYOffset === 0
-      });
-    };
+  componentDidMount() {
+    this.handleGetInnerHeight();
+    this.handleGetList();
+    this.handleSetUpWebSocket();
+    this.handleCheckToken();
+
+    // 添加函数节流控制
+    window.addEventListener('scroll', this.handleGetList);
+    window.addEventListener('resize', this.handleGetList);
   }
 
   componentWillUnmount() {
@@ -216,11 +210,6 @@ class Posts extends React.Component {
 
   render() {
     const { modalIsOpen } = this.state;
-    const loader = (
-      <div className="loader" key={0}>
-        正在加载...
-      </div>
-    );
 
     return (
       <div className="posts-container">
@@ -258,25 +247,25 @@ class Posts extends React.Component {
                       <ReactMarkdown
                         className={'markdown'}
                         source={item.body}
-                        // renderers={{
-                        //   image: props => {
-                        //     const images = [{ src: props.src }];
-                        //     const showLightBox = () => {
-                        //       this.setState({
-                        //         images,
-                        //         modalIsOpen: !modalIsOpen
-                        //       });
-                        //     };
-                        //     return (
-                        //       <img
-                        //         className="post-img"
-                        //         src={props.src}
-                        //         alt={props.title}
-                        //         onClick={showLightBox}
-                        //       />
-                        //     );
-                        //   }
-                        // }}
+                        renderers={{
+                          image: props => {
+                            const images = [{ src: props.src }];
+                            const showLightBox = () => {
+                              this.setState({
+                                images,
+                                modalIsOpen: !modalIsOpen
+                              });
+                            };
+                            return (
+                              <img
+                                className="post-img"
+                                src={props.src}
+                                alt={props.title}
+                                onClick={showLightBox}
+                              />
+                            );
+                          }
+                        }}
                       />
                     </div>
                   </div>
@@ -309,11 +298,7 @@ class Posts extends React.Component {
         </ModalGateway>
 
         {this.state.hasNewPost ? (
-          <h4
-            className="new-post"
-            style={{ top: this.state.isTop ? '10rem' : '5rem' }}
-            onClick={this.handleRefresh}
-          >
+          <h4 className="new-post" onClick={this.handleRefresh}>
             有新文章
           </h4>
         ) : null}

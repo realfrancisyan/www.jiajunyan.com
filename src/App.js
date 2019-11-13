@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Home from './containers/Home';
-import Auth from './containers/Auth'
+import Auth from './containers/Auth';
 
 function App() {
   return (
