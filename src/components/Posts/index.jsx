@@ -45,7 +45,7 @@ class Posts extends React.Component {
       hasMore: true, // 是否有更多文章
       page: {
         pageNo: 1,
-        pageSize: 2
+        pageSize: 10
       }
     };
 
