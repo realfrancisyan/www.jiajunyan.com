@@ -59,7 +59,7 @@ class Posts extends React.Component {
       'onScroll'
     ]);
 
-    this.handleGetList = throttle(this.handleGetList, 2000);
+    this.handleGetList = throttle(this.handleGetList, 1500);
   }
 
   onScroll() {
@@ -67,7 +67,7 @@ class Posts extends React.Component {
     const outerHeight = document.documentElement.clientHeight;
     const scrollTop = document.documentElement.scrollTop;
     //加载更多操作
-    if (innerHeight < outerHeight + scrollTop) {
+    if (innerHeight < outerHeight + scrollTop + 200) {
       this.handleGetList();
     }
   }
