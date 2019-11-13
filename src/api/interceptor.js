@@ -52,9 +52,9 @@ axios.interceptors.response.use(
         if (token) {
           localStorage.removeItem('token');
         }
-        window.location.href = '/auth';
+        window.location.href = '/#/auth';
         alert(data.data);
-        return;
+        break;
 
       default:
     }

@@ -11,6 +11,7 @@ import openSocket from 'socket.io-client';
 import { parseToken } from '../../common';
 import throttle from 'lodash.throttle';
 import { BASE_URL } from '../../api/url';
+import { clearCache } from '../../api/cache';
 const ReactMarkdown = require('react-markdown');
 
 const socket = openSocket.connect(BASE_URL);
@@ -67,7 +68,6 @@ class Posts extends React.Component {
     const scrollTop = document.documentElement.scrollTop;
     //加载更多操作
     if (innerHeight < outerHeight + scrollTop) {
-      console.log('loadmore');
       this.handleGetList();
     }
   }
@@ -91,15 +91,19 @@ class Posts extends React.Component {
 
   // 重置
   handleReset() {
-    this.setState(prevState => ({
-      page: {
-        ...prevState.page,
-        pageNo: 1
-      },
-      isFirstLoad: true,
-      posts: [],
-      hasMore: true
-    }));
+    return new Promise(resolve => {
+      this.setState(prevState => ({
+        page: {
+          ...prevState.page,
+          pageNo: 1
+        },
+        isFirstLoad: true,
+        posts: [],
+        hasMore: true
+      }));
+
+      resolve();
+    });
   }
 
   // 获取文章列表
@@ -112,6 +116,7 @@ class Posts extends React.Component {
 
     if (!this.state.hasMore) return;
     if (this.isLoading) return;
+
     this.isLoading = true;
 
     const onSuccess = res => {
@@ -133,7 +138,9 @@ class Posts extends React.Component {
       }
     };
 
-    getPosts(params)
+    // 列表使用缓存
+    const useCache = true;
+    getPosts(params, useCache)
       .then(onSuccess)
       .finally(() => {
         this.isLoading = false;
@@ -151,6 +158,9 @@ class Posts extends React.Component {
       // 删除
       deletePost({ id: post.id }).then(res => {
         if (res.message === 'SUCCESS') {
+          // 刷新页面时，先删除缓存
+          clearCache('/talk/getPosts');
+
           this.handleReset();
           this.handleGetList();
         }
@@ -158,10 +168,15 @@ class Posts extends React.Component {
     }
   }
 
-  handleRefresh() {
+  async handleRefresh() {
+    // 刷新页面时，先删除缓存
+    clearCache('/talk/getPosts');
+
     this.setState({
       hasNewPost: false
     });
+    await this.handleReset();
+    console.log(this.state.page);
     this.handleGetList();
     window.scrollTo(0, 0);
   }
@@ -199,16 +214,12 @@ class Posts extends React.Component {
     this.handleCheckToken();
 
     // 添加函数节流控制
-    // window.addEventListener('scroll', this.handleGetList);
     window.addEventListener('scroll', this.onScroll);
-    // window.addEventListener('resize', this.handleGetList);
   }
 
   componentWillUnmount() {
     // 移除函数节流
     window.removeEventListener('scroll', this.onScroll);
-    // window.removeEventListener('scroll', this.handleGetList);
-    // window.removeEventListener('resize', this.handleGetList);
 
     this.setState = (state, callback) => {
       return;

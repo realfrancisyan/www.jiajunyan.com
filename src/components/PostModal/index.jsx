@@ -5,6 +5,7 @@ import bindAll from 'lodash.bindall';
 import { createPost } from '../../api/talk';
 import openSocket from 'socket.io-client';
 import { BASE_URL } from '../../api/url';
+import { clearCache } from '../../api/cache';
 
 const socket = openSocket.connect(BASE_URL);
 
@@ -43,6 +44,9 @@ class PostModal extends React.Component {
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
+        // 刷新页面时，先删除缓存
+        clearCache('/talk/getPosts');
+
         this.handleReset();
         this.handleToggleModal();
         this.handleGetList();
