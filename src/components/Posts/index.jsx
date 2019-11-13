@@ -9,7 +9,6 @@ import PlusIcon from './images/plus.png';
 import PostModal from '../PostModal';
 import openSocket from 'socket.io-client';
 import { parseToken } from '../../common';
-import InfiniteScroll from 'react-infinite-scroller';
 import throttle from 'lodash.throttle';
 import { BASE_URL } from '../../api/url';
 const ReactMarkdown = require('react-markdown');
@@ -30,12 +29,6 @@ const SkeletonContainer = props => {
   return null;
 };
 
-const loader = (
-  <div className="loader" key={0}>
-    正在加载...
-  </div>
-);
-
 class Posts extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +45,7 @@ class Posts extends React.Component {
       hasMore: true, // 是否有更多文章
       page: {
         pageNo: 1,
-        pageSize: 10
+        pageSize: 2
       }
     };
 
@@ -61,10 +54,22 @@ class Posts extends React.Component {
       'handleTogglePostModal',
       'handleGetList',
       'handleRefresh',
-      'handleReset'
+      'handleReset',
+      'onScroll'
     ]);
 
-    this.handleGetList = throttle(this.handleGetList, 500);
+    this.handleGetList = throttle(this.handleGetList, 2000);
+  }
+
+  onScroll() {
+    const innerHeight = document.querySelector('#root').clientHeight;
+    const outerHeight = document.documentElement.clientHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    //加载更多操作
+    if (innerHeight < outerHeight + scrollTop) {
+      console.log('loadmore');
+      this.handleGetList();
+    }
   }
 
   // 获取屏幕高度
@@ -194,14 +199,16 @@ class Posts extends React.Component {
     this.handleCheckToken();
 
     // 添加函数节流控制
-    window.addEventListener('scroll', this.handleGetList);
-    window.addEventListener('resize', this.handleGetList);
+    // window.addEventListener('scroll', this.handleGetList);
+    window.addEventListener('scroll', this.onScroll);
+    // window.addEventListener('resize', this.handleGetList);
   }
 
   componentWillUnmount() {
     // 移除函数节流
-    window.removeEventListener('scroll', this.handleGetList);
-    window.removeEventListener('resize', this.handleGetList);
+    window.removeEventListener('scroll', this.onScroll);
+    // window.removeEventListener('scroll', this.handleGetList);
+    // window.removeEventListener('resize', this.handleGetList);
 
     this.setState = (state, callback) => {
       return;
@@ -217,70 +224,59 @@ class Posts extends React.Component {
           isFirstLoad={this.state.isFirstLoad}
           skeleton={this.state.skeleton}
         ></SkeletonContainer>
-
         {!this.state.isFirstLoad ? (
           <div className="posts">
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={this.handleGetList}
-              hasMore={this.state.hasMore}
-              useWindow={false}
-              loader={loader}
-            >
-              {this.state.posts.map((item, index) => {
-                return (
-                  <div className="post" key={index}>
-                    <div className="top">
-                      <div className="left">
-                        <h2>{item.title}</h2>
-                        <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
+            {this.state.posts.map((item, index) => {
+              return (
+                <div className="post" key={index}>
+                  <div className="top">
+                    <div className="left">
+                      <h2>{item.title}</h2>
+                      <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
+                    </div>
+                    {this.state.token ? (
+                      <div className="right">
+                        <span onClick={() => this.handleDeletePost(item)}>
+                          删除
+                        </span>
                       </div>
-                      {this.state.token ? (
-                        <div className="right">
-                          <span onClick={() => this.handleDeletePost(item)}>
-                            删除
-                          </span>
-                        </div>
-                      ) : null}
-                    </div>
-                    <div className="bottom">
-                      <ReactMarkdown
-                        className={'markdown'}
-                        source={item.body}
-                        renderers={{
-                          image: props => {
-                            const images = [{ src: props.src }];
-                            const showLightBox = () => {
-                              this.setState({
-                                images,
-                                modalIsOpen: !modalIsOpen
-                              });
-                            };
-                            return (
-                              <img
-                                className="post-img"
-                                src={props.src}
-                                alt={props.title}
-                                onClick={showLightBox}
-                              />
-                            );
-                          }
-                        }}
-                      />
-                    </div>
+                    ) : null}
                   </div>
-                );
-              })}
-            </InfiniteScroll>
+                  <div className="bottom">
+                    <ReactMarkdown
+                      className={'markdown'}
+                      source={item.body}
+                      renderers={{
+                        image: props => {
+                          const images = [{ src: props.src }];
+                          const showLightBox = () => {
+                            this.setState({
+                              images,
+                              modalIsOpen: !modalIsOpen
+                            });
+                          };
+                          return (
+                            <img
+                              className="post-img"
+                              src={props.src}
+                              alt={props.title}
+                              onClick={showLightBox}
+                            />
+                          );
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ) : null}
-
         {this.state.token ? (
           <div className="add-post" onClick={this.handleTogglePostModal}>
             <img src={PlusIcon} alt="add post" />
           </div>
         ) : null}
-
         {this.state.postModalIsOpen ? (
           <PostModal
             handleTogglePostModal={this.handleTogglePostModal}
@@ -288,7 +284,6 @@ class Posts extends React.Component {
             handleReset={this.handleReset}
           ></PostModal>
         ) : null}
-
         <ModalGateway>
           {modalIsOpen ? (
             <Modal onClose={this.toggleModal}>
@@ -296,12 +291,14 @@ class Posts extends React.Component {
             </Modal>
           ) : null}
         </ModalGateway>
-
         {this.state.hasNewPost ? (
           <h4 className="new-post" onClick={this.handleRefresh}>
             有新文章
           </h4>
         ) : null}
+        <div className="loader">
+          {this.state.hasMore ? '正在加载...' : '全部加载完毕'}
+        </div>
       </div>
     );
   }
