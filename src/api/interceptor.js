@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { parseToken } from '../common';
+import Alert from '../components/Alert';
 
 // const CODEMESSAGE = {
 //   200: '服务器成功返回请求的数据。',
@@ -45,7 +46,7 @@ axios.interceptors.response.use(
     switch (data.status) {
       // token 失效
       case 403:
-        alert(data.data);
+        Alert.open(data.data);
         break;
       case 401:
         const { token } = parseToken();
@@ -53,7 +54,7 @@ axios.interceptors.response.use(
           localStorage.removeItem('token');
         }
         window.location.href = '/#/auth';
-        alert(data.data);
+        Alert.open(data.data);
         break;
 
       default:

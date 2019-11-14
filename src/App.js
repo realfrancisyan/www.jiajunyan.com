@@ -5,6 +5,7 @@ import Auth from './containers/Auth';
 import { connect } from 'react-redux';
 import { ERROR_NOTIFY } from './common/actionTypes';
 
+// redux 使用示例，待删除
 const mapStateToProps = state => ({
   ...state
 });
@@ -14,9 +15,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class App extends React.Component {
-  componentDidMount() {
-    this.props.onAdd(true);
-  }
   render() {
     return (
       <div className="App">
