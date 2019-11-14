@@ -53,7 +53,7 @@ class Talk extends React.Component {
 
   render() {
     return (
-      <div className="home-container">
+      <div className="box500">
         <Header></Header>
         <Posts ref={cd => (this.postsComponent = cd)}></Posts>
         <LogOutButton

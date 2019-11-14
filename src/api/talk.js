@@ -2,7 +2,7 @@ import { request } from './base';
 import { BASE_URL } from './url';
 
 export const getPosts = (data, useCache = false) => {
-  return request.get(`${BASE_URL}/talk/getPosts`, data, useCache);
+  return request.get(`${BASE_URL}/talk/public/getPosts`, data, useCache);
 };
 
 export const createPost = (data, useCache = false) => {

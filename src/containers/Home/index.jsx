@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
-import Header from '../../components/Talk/Header';
-import Posts from '../../components/Talk/Posts';
+import Header from '../../components/Home/Header';
+import Posts from '../../components/Home/Posts';
 import bindAll from 'lodash.bindall';
 import { parseToken } from '../../common';
 
@@ -53,7 +53,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="home-container">
+      <div className="home-container box700">
         <Header></Header>
         <Posts ref={cd => (this.postsComponent = cd)}></Posts>
         <LogOutButton

@@ -45,6 +45,7 @@ class Auth extends React.Component {
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
+        localStorage.clear();
         const { data } = res;
         // 保存 token 到 localStorage
         localStorage.setItem('token', JSON.stringify(data));
@@ -73,7 +74,7 @@ class Auth extends React.Component {
 
   render() {
     return (
-      <div className="auth-container">
+      <div className="auth-container box500">
         <Header></Header>
         <div className="form">
           <input

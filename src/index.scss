@@ -16,8 +16,18 @@ code {
     monospace;
 }
 
-.App {
+.box500 {
   width: 500px;
+  margin: 20px auto;
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    margin: 1rem auto;
+  }
+}
+
+.box700 {
+  width: 700px;
   margin: 20px auto;
 
   @media screen and (max-width: 768px) {
