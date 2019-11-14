@@ -1,7 +1,7 @@
 import React from 'react';
 import bindAll from 'lodash.bindall';
 import './index.scss';
-import Header from '../../components/Header';
+import Header from '../../components/Talk/Header';
 import { login } from '../../api/user';
 
 class Auth extends React.Component {

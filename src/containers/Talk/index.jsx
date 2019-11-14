@@ -18,7 +18,7 @@ const LogOutButton = props => {
   return null;
 };
 
-class Home extends React.Component {
+class Talk extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,4 +66,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default Talk;

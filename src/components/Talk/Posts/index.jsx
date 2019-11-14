@@ -1,17 +1,17 @@
 import React from 'react';
 import './index.scss';
-import Skeleton from '../Skeleton';
-import { getPosts, deletePost } from '../../api/talk';
+import Skeleton from '../../Skeleton';
+import { getPosts, deletePost } from '../../../api/talk';
 import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
 import PlusIcon from './images/plus.png';
 import PostModal from '../PostModal';
 import openSocket from 'socket.io-client';
-import { parseToken } from '../../common';
+import { parseToken } from '../../../common';
 import throttle from 'lodash.throttle';
-import { BASE_URL } from '../../api/url';
-import { clearCache } from '../../api/cache';
+import { BASE_URL } from '../../../api/url';
+import { clearCache } from '../../../api/cache';
 const ReactMarkdown = require('react-markdown');
 
 const socket = openSocket.connect(BASE_URL);

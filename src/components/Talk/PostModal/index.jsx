@@ -2,10 +2,10 @@ import React from 'react';
 import './index.scss';
 import PlusIcon from '../Posts/images/plus.png';
 import bindAll from 'lodash.bindall';
-import { createPost } from '../../api/talk';
+import { createPost } from '../../../api/talk';
 import openSocket from 'socket.io-client';
-import { BASE_URL } from '../../api/url';
-import { clearCache } from '../../api/cache';
+import { BASE_URL } from '../../../api/url';
+import { clearCache } from '../../../api/cache';
 
 const socket = openSocket.connect(BASE_URL);
 
