@@ -225,7 +225,7 @@ class Posts extends React.Component {
   // 建立 web socket 连接
   handleSetUpWebSocket() {
     // listen for events
-    socket.on('newPost', data => {
+    socket.on('newBlogPost', data => {
       // 非登录用户才会显示新文章按钮
       const token = this.handleCheckToken();
       if (!token) {

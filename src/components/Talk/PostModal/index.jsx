@@ -68,8 +68,8 @@ class PostModal extends React.Component {
   }
 
   handleSetNotification() {
-    socket.emit('newPost', {
-      newPost: true
+    socket.emit('newTalkPost', {
+      newTalkPost: true
     });
   }
 

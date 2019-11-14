@@ -2,7 +2,7 @@ import React from 'react';
 import './index.scss';
 import PlusIcon from '../Posts/images/plus.png';
 import bindAll from 'lodash.bindall';
-import { createPost } from '../../../api/talk';
+import { createPost } from '../../../api/blog';
 import openSocket from 'socket.io-client';
 import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
@@ -68,8 +68,8 @@ class PostModal extends React.Component {
   }
 
   handleSetNotification() {
-    socket.emit('newPost', {
-      newPost: true
+    socket.emit('newBlogPost', {
+      newBlogPost: true
     });
   }
 
