@@ -66,6 +66,10 @@ class Auth extends React.Component {
       });
   }
 
+  componentDidMount() {
+    document.title = 'Login - Jiajun Yan';
+  }
+
   componentWillUnmount() {
     this.setState = (state, callback) => {
       return;
