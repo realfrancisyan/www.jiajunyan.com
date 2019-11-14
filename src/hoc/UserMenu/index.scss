@@ -1,0 +1,23 @@
+.logout {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  p {
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  button {
+    background: rgb(247, 156, 156);
+    border: none;
+    color: #fff;
+    margin-left: 1rem;
+    border-radius: 1000px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
