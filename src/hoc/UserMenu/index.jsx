@@ -40,7 +40,7 @@ const UserMenuHOC = WrappedComponent => {
     handleLogOut() {
       localStorage.removeItem('token');
       // 登出后，调用子组件，刷新 token，移除编辑态
-      // 由于是 HOC，则需要找出嵌套的组件
+      // 由于是 HOC，则需要找出嵌套 Posts 内的组件
       if (this.wrappedComponent.postsComponent.handleCheckToken) {
         this.wrappedComponent.postsComponent.handleCheckToken();
       }
