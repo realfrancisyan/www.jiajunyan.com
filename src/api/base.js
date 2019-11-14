@@ -8,6 +8,7 @@ const MethodType = {
   DELETE: 'DELETE'
 };
 
+// 发请求，并按需缓存
 const cacheResult = p => {
   const { url, method, params, resolve, reject, useCache } = p;
   const data = method === 'GET' ? 'params' : 'data';
@@ -36,6 +37,7 @@ const cacheResult = p => {
     });
 };
 
+// 执行发请求操作
 const send = (url, method = MethodType.GET, params = {}, useCache) => {
   return new Promise((resolve, reject) => {
     const p = {

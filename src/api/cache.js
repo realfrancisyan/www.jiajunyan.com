@@ -1,9 +1,12 @@
 const timeout = 30 * 60 * 1000; // 缓存时间（30 分钟）
 
+// 获取特定键
+// 如果有 formData，则记得删除
 export const getStorageKey = (url, method, params) => {
   return `u:${url},m:${method},p:${JSON.stringify(params)}`;
 };
 
+// 获取返回数据，判断是否有缓存
 export const getResult = p => {
   const { url, method, params, resolve, cacheResult, useCache } = p;
   let cache = localStorage.getItem(getStorageKey(url, method, params));
@@ -36,10 +39,13 @@ export const getResult = p => {
   resolve(cache);
 };
 
-// 清除某个接口的所有缓存
+/**
+ * 清除某个接口的所有缓存
+ * @param {string} urlName 接口名
+ */
 export const clearCache = urlName => {
   const arr = [];
-  for (var i = 0; i < localStorage.length; i++) {
+  for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (key) {
       // 找出 u 开头的接口，排除其他无关的 storage item

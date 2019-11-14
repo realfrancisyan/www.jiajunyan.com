@@ -184,6 +184,7 @@ class Posts extends React.Component {
   handleTogglePostModal() {
     this.setState(state => ({ postModalIsOpen: !state.postModalIsOpen }));
   }
+
   // 建立 web socket 连接
   handleSetUpWebSocket() {
     // listen for events
