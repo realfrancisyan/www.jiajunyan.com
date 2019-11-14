@@ -11,7 +11,7 @@ const getAlertInstance = tip => {
 };
 
 export default {
-  open(tip = '请自定义错误信息', timeout = 2000) {
+  open(tip = '请自定义错误信息', timeout = 3000) {
     getAlertInstance(tip);
     setTimeout(() => {
       this.close();
