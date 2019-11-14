@@ -26,15 +26,11 @@ export const getResult = p => {
 
   // 如果在缓存时间外，重新请求
   if (timeout < currentTimeStamp - cache.timeStamp) {
-    console.log('refresh');
     // 只要缓存失效，该接口下的所有缓存都要删除
-    console.log(new URL(url).pathname);
     clearCache(new URL(url).pathname);
     cacheResult(p);
     return;
   }
-
-  console.log('direct');
 
   // 否则，直接拿缓存数据
   resolve(cache);
@@ -61,6 +57,4 @@ export const clearCache = urlName => {
   arr.forEach(key => {
     localStorage.removeItem(key);
   });
-
-  console.log(arr);
 };

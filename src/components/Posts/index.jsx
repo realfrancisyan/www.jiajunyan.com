@@ -115,8 +115,8 @@ class Posts extends React.Component {
     };
 
     if (!this.state.hasMore) return;
-    if (this.isLoading) return;
 
+    if (this.isLoading) return;
     this.isLoading = true;
 
     const onSuccess = res => {
@@ -176,7 +176,6 @@ class Posts extends React.Component {
       hasNewPost: false
     });
     await this.handleReset();
-    console.log(this.state.page);
     this.handleGetList();
     window.scrollTo(0, 0);
   }
