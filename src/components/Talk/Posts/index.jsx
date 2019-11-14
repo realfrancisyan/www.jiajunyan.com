@@ -158,7 +158,7 @@ class Posts extends React.Component {
       deletePost({ id: post.id }).then(res => {
         if (res.message === 'SUCCESS') {
           // 刷新页面时，先删除缓存
-          clearCache('/talk/getPosts');
+          clearCache('/talk/public/getPosts');
 
           this.handleReset();
           this.handleGetList();
@@ -169,7 +169,7 @@ class Posts extends React.Component {
 
   async handleRefresh() {
     // 刷新页面时，先删除缓存
-    clearCache('/talk/getPosts');
+    clearCache('/talk/public/getPosts');
 
     this.setState({
       hasNewPost: false

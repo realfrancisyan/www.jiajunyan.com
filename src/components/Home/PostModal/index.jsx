@@ -45,7 +45,7 @@ class PostModal extends React.Component {
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
         // 刷新页面时，先删除缓存
-        clearCache('/talk/getPosts');
+        clearCache('/blog/public/getPosts');
 
         this.handleReset();
         this.handleToggleModal();
