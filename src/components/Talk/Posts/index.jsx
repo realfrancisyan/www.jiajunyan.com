@@ -12,7 +12,7 @@ import { parseToken } from '../../../common';
 import throttle from 'lodash.throttle';
 import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
-const ReactMarkdown = require('react-markdown');
+import ReactMarkdown from 'react-markdown';
 
 const socket = openSocket.connect(BASE_URL);
 
@@ -78,7 +78,6 @@ class Posts extends React.Component {
       this.handleCreateSkeleton();
     };
     handleSetInnerHeight();
-    window.addEventListener('resize', handleSetInnerHeight);
   }
 
   // 根据屏幕高度设置骨架屏个数
