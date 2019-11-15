@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Home from './containers/Home';
 import Auth from './containers/Auth';
 import Talk from './containers/Talk';
+import BlogPost from './containers/BlogPost';
 import { connect } from 'react-redux';
 import { ERROR_NOTIFY } from './common/actionTypes';
 
@@ -23,6 +24,7 @@ class App extends React.Component {
           <Route exact path="/" component={Home} />
           <Route path="/auth" component={Auth} />
           <Route path="/talk" component={Talk} />
+          <Route path="/post/:id?" component={BlogPost} />
         </Switch>
       </div>
     );

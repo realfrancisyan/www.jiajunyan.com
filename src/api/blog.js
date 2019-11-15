@@ -16,3 +16,7 @@ export const deletePost = (data, useCache = false) => {
 export const getTags = (data, useCache = false) => {
   return request.get(`${BASE_URL}/blog/public/getTags`, data, useCache);
 };
+
+export const getSinglePost = (data, useCache = false) => {
+  return request.get(`${BASE_URL}/blog/public/getSinglePost`, data, useCache);
+};

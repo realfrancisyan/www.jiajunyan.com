@@ -318,7 +318,9 @@ class Posts extends React.Component {
                   <div className="post" key={index}>
                     <div className="top">
                       <div className="left">
-                        <h2>{item.title}</h2>
+                        <Link to={`/post/${item.id}`}>
+                          <h2>{item.title}</h2>
+                        </Link>
                         <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
                       </div>
                       {this.state.token ? (
