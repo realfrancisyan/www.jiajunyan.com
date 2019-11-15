@@ -2,12 +2,26 @@ import React from 'react';
 import './index.scss';
 import PlusIcon from '../Posts/images/plus.png';
 import bindAll from 'lodash.bindall';
-import { createPost } from '../../../api/blog';
+import { createPost, getTags } from '../../../api/blog';
 import openSocket from 'socket.io-client';
 import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
 
 const socket = openSocket.connect(BASE_URL);
+
+const TagDropdown = props => {
+  return (
+    <select onChange={props.handleSelectTag} value={props.tag}>
+      {props.tagList.map((tag, index) => {
+        return (
+          <option value={tag.type} key={index}>
+            {tag.name}
+          </option>
+        );
+      })}
+    </select>
+  );
+};
 
 class PostModal extends React.Component {
   constructor(props) {
@@ -15,15 +29,37 @@ class PostModal extends React.Component {
     this.state = {
       title: '',
       content: '',
-      isSubmit: false
+      tag: 0,
+      isSubmit: false,
+      tagList: []
     };
 
     bindAll(this, [
       'handleChangeTitle',
       'handleChangeContent',
       'handleSubmit',
-      'handleToggleModal'
+      'handleToggleModal',
+      'handleGetTags',
+      'handleSelectTag'
     ]);
+  }
+
+  handleSelectTag(e) {
+    console.log(e.target.value);
+    this.setState({
+      tag: e.target.value
+    });
+  }
+
+  handleGetTags() {
+    const onSuccess = res => {
+      if (res.message === 'SUCCESS') {
+        this.setState({
+          tagList: res.data
+        });
+      }
+    };
+    getTags().then(onSuccess);
   }
 
   handleChangeTitle(e) {
@@ -39,8 +75,9 @@ class PostModal extends React.Component {
   }
 
   handleSubmit() {
-    const { title, content } = this.state;
-    if (!title || !content) return;
+    const { title, content, tag } = this.state;
+    console.log('tag - ', tag);
+    if (!title || !content || tag === '') return;
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
@@ -58,7 +95,7 @@ class PostModal extends React.Component {
       isSubmit: true
     });
 
-    createPost({ title, content })
+    createPost({ title, content, type: tag })
       .then(onSuccess)
       .finally(() => {
         this.setState({
@@ -92,6 +129,10 @@ class PostModal extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.handleGetTags();
+  }
+
   componentWillUnmount() {
     this.setState = (state, callback) => {
       return;
@@ -114,6 +155,13 @@ class PostModal extends React.Component {
             rows="10"
             onChange={this.handleChangeContent}
           ></textarea>
+
+          <TagDropdown
+            tagList={this.state.tagList}
+            tag={this.state.tag}
+            handleSelectTag={this.handleSelectTag}
+          ></TagDropdown>
+
           <button
             onClick={this.handleSubmit}
             disabled={!this.state.title || !this.state.content}
