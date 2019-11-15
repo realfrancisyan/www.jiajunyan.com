@@ -14,6 +14,7 @@ import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
 import ReactMarkdown from 'react-markdown';
 import CodeBlock from './CodeBlock';
+import { Link } from 'react-router-dom';
 
 const socket = openSocket.connect(BASE_URL);
 
@@ -33,26 +34,34 @@ const SkeletonContainer = props => {
 
 const TagContainer = props => {
   const { tagList } = props;
-  if (tagList.length) {
-    return (
-      <div className="sidebar">
-        <h2>分类</h2>
-        <ul>
-          {tagList.map((tag, index) => {
-            return <li key={index}>{tag.name}</li>;
-          })}
-        </ul>
 
-        <h2>其他</h2>
-        <ul>
-          <li>Talk</li>
-          <li>关于我</li>
-        </ul>
-      </div>
-    );
-  }
+  return (
+    <div className="sidebar">
+      <h2>分类</h2>
+      <ul>
+        {tagList.map((tag, index) => {
+          return (
+            <li
+              className={`${
+                props.currentType === tag.type ? 'isSelected' : ''
+              }`}
+              key={index}
+              onClick={() => props.handleSelectTag(tag)}
+            >
+              {tag.name}
+            </li>
+          );
+        })}
+      </ul>
 
-  return null;
+      <h2>其他</h2>
+      <ul>
+        <li>
+          <Link to="/talk">Talk</Link>
+        </li>
+      </ul>
+    </div>
+  );
 };
 
 class Posts extends React.Component {
@@ -73,7 +82,8 @@ class Posts extends React.Component {
         pageNo: 1,
         pageSize: 10
       },
-      tagList: []
+      tagList: [],
+      currentType: ''
     };
 
     bindAll(this, [
@@ -82,7 +92,8 @@ class Posts extends React.Component {
       'handleGetList',
       'handleRefresh',
       'handleReset',
-      'onScroll'
+      'onScroll',
+      'handleSelectTag'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 1500);
@@ -136,11 +147,21 @@ class Posts extends React.Component {
       if (res.message === 'SUCCESS') {
         console.log(res);
         this.setState({
-          tagList: res.data
+          tagList: [{ name: '全部', type: '' }, ...res.data]
         });
       }
     };
     getTags().then(onSuccess);
+  }
+
+  // 获取分类下的文章
+  async handleSelectTag(tagItem) {
+    await this.handleReset();
+    this.setState({
+      currentType: tagItem.type
+    });
+
+    this.handleGetList();
   }
 
   // 获取文章列表
@@ -151,6 +172,12 @@ class Posts extends React.Component {
       pageSize
     };
 
+    // 如果没有指定分类，则不传分类
+    const { currentType } = this.state;
+    if (currentType !== '') {
+      params.type = currentType;
+    }
+
     if (!this.state.hasMore) return;
 
     if (this.isLoading) return;
@@ -158,12 +185,21 @@ class Posts extends React.Component {
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
+        // 如果返回为空，则表示没有更多，且停止
         if (!res.data.length) {
           this.setState({
             hasMore: false
           });
           return;
         }
+
+        // 当前为第一页且返回少于 pageSize，则需要设置已加载完毕，修复文章数量过少，浏览器高度不足，导致无法下拉的问题
+        if (res.data.length < pageSize && pageNo === 1) {
+          this.setState({
+            hasMore: false
+          });
+        }
+
         this.setState(prevState => ({
           page: {
             ...prevState.page,
@@ -212,6 +248,7 @@ class Posts extends React.Component {
     this.setState({
       hasNewPost: false
     });
+
     await this.handleReset();
     this.handleGetList();
     window.scrollTo(0, 0);
@@ -269,13 +306,13 @@ class Posts extends React.Component {
 
     return (
       <div className="blog-container">
-        <div className="blog-posts box500">
+        <div className="blog-posts">
           <SkeletonContainer
             isFirstLoad={this.state.isFirstLoad}
             skeleton={this.state.skeleton}
           ></SkeletonContainer>
           {!this.state.isFirstLoad ? (
-            <div className="posts">
+            <div className="posts box500">
               {this.state.posts.map((item, index) => {
                 return (
                   <div className="post" key={index}>
@@ -329,7 +366,11 @@ class Posts extends React.Component {
           </div>
         </div>
 
-        <TagContainer tagList={this.state.tagList}></TagContainer>
+        <TagContainer
+          tagList={this.state.tagList}
+          currentType={this.state.currentType}
+          handleSelectTag={this.handleSelectTag}
+        ></TagContainer>
 
         {this.state.token ? (
           <div className="add-post" onClick={this.handleTogglePostModal}>

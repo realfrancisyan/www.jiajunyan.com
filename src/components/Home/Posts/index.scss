@@ -5,6 +5,13 @@
   .blog-posts {
     margin-left: 0;
     margin-right: 0;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  .posts {
     @media screen and (max-width: 768px) {
       width: 100%;
     }
@@ -85,9 +92,6 @@
         list-style-type: decimal;
 
         li {
-          // font-weight: 600;
-          // padding-top: 1rem;
-
           p:first-child {
             font-weight: 600;
           }
@@ -210,8 +214,18 @@
       padding-bottom: 0.5rem;
       cursor: pointer;
 
+      &.isSelected {
+        font-weight: 600;
+        list-style-type: disc;
+      }
+
       &:hover {
         text-decoration: underline;
+      }
+
+      a {
+        text-decoration: none;
+        color: #000;
       }
     }
 
