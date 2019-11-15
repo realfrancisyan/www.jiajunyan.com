@@ -45,7 +45,6 @@ class PostModal extends React.Component {
   }
 
   handleSelectTag(e) {
-    console.log(e.target.value);
     this.setState({
       tag: e.target.value
     });
@@ -76,7 +75,6 @@ class PostModal extends React.Component {
 
   handleSubmit() {
     const { title, content, tag } = this.state;
-    console.log('tag - ', tag);
     if (!title || !content || tag === '') return;
 
     const onSuccess = res => {

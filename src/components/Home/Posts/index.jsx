@@ -145,7 +145,6 @@ class Posts extends React.Component {
   handleGetTags() {
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
-        console.log(res);
         this.setState({
           tagList: [{ name: '全部', type: '' }, ...res.data]
         });
