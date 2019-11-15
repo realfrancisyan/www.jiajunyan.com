@@ -45,10 +45,10 @@ axios.interceptors.response.use(
     // 全局设置错误提示
     switch (data.status) {
       // token 失效
-      case 403:
+      case 401:
         Alert.open(data.data);
         break;
-      case 401:
+      case 403:
         const { token } = parseToken();
         if (token) {
           localStorage.removeItem('token');
