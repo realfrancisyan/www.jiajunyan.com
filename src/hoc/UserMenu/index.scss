@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   font-size: 0.9rem;
+  z-index: 1001;
   p {
     @media screen and (max-width: 768px) {
       display: none;

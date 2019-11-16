@@ -386,12 +386,11 @@ class Posts extends React.Component {
                           }}
                         />
 
-                        {this.state.postsHeight[index] >=
+                        {this.state.postsHeight[index] + 1 >=
                         this.state.htmlFontSize * 20 ? (
                           <div className="unfold-field">
                             <div className="unfold-field_mask"></div> 
                             <Link to={`/post/${item.id}`}>
-                                 
                               <div className="unfold-field_text">
                                 <span>查看全文</span>
                               </div>
