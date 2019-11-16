@@ -66,6 +66,12 @@ class Posts extends React.Component {
 
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
+        // 如果返回对象为空，表示没结果，返回首页
+        if (Object.keys(res.data).length === 0) {
+          this.props.history.push('/');
+          return;
+        }
+
         this.setState({
           isFirstLoad: false,
           posts: [res.data]
