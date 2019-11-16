@@ -83,7 +83,9 @@ class Posts extends React.Component {
         pageSize: 10
       },
       tagList: [],
-      currentType: ''
+      currentType: '',
+      htmlFontSize: 0,
+      postsHeight: [] // 用于判断显示每篇文章的阅读更多
     };
 
     bindAll(this, [
@@ -280,15 +282,39 @@ class Posts extends React.Component {
     return token;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.handleGetTags();
     this.handleGetInnerHeight();
-    this.handleGetList();
     this.handleSetUpWebSocket();
     this.handleCheckToken();
+    await this.handleGetList();
+    this.handleGetHTMLFontSize();
 
     // 添加函数节流控制
     window.addEventListener('scroll', this.onScroll);
+  }
+
+  // 通过 did update 判断文章数量是否有变，有变则需要重新计算每篇文章高度
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.posts !== this.state.posts) {
+      this.handleGetHTMLFontSize();
+    }
+  }
+
+  handleGetHTMLFontSize() {
+    const { posts } = this.state;
+    const postsHeight = posts.map((post, index) => {
+      return this[`postElement_${index}`].clientHeight;
+    });
+
+    const htmlFontSize = document
+      .getElementsByTagName('html')[0]
+      .style.fontSize.replace('px', '');
+
+    this.setState({
+      htmlFontSize: +htmlFontSize,
+      postsHeight
+    });
   }
 
   componentWillUnmount() {
@@ -331,30 +357,48 @@ class Posts extends React.Component {
                       ) : null}
                     </div>
                     <div className="bottom">
-                      <ReactMarkdown
-                        className={'markdown'}
-                        source={item.body}
-                        renderers={{
-                          code: CodeBlock,
-                          image: props => {
-                            const images = [{ src: props.src }];
-                            const showLightBox = () => {
-                              this.setState({
-                                images,
-                                modalIsOpen: !modalIsOpen
-                              });
-                            };
-                            return (
-                              <img
-                                className="post-img"
-                                src={props.src}
-                                alt={props.title}
-                                onClick={showLightBox}
-                              />
-                            );
-                          }
-                        }}
-                      />
+                      <div
+                        className="post-overflow"
+                        ref={div => (this[`postElement_${index}`] = div)}
+                      >
+                        <ReactMarkdown
+                          className={'markdown'}
+                          source={item.body}
+                          renderers={{
+                            code: CodeBlock,
+                            image: props => {
+                              const images = [{ src: props.src }];
+                              const showLightBox = () => {
+                                this.setState({
+                                  images,
+                                  modalIsOpen: !modalIsOpen
+                                });
+                              };
+                              return (
+                                <img
+                                  className="post-img"
+                                  src={props.src}
+                                  alt={props.title}
+                                  onClick={showLightBox}
+                                />
+                              );
+                            }
+                          }}
+                        />
+
+                        {this.state.postsHeight[index] >=
+                        this.state.htmlFontSize * 20 ? (
+                          <div className="unfold-field">
+                            <div className="unfold-field_mask"></div> 
+                            <Link to={`/post/${item.id}`}>
+                                 
+                              <div className="unfold-field_text">
+                                <span>查看全文</span>
+                              </div>
+                            </Link>
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
                 );

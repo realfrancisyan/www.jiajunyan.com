@@ -1,12 +1,12 @@
 import React from 'react';
 import '../Home/Posts/index.scss';
-import Skeleton from '../Skeleton';
-import { getSinglePost } from '../../api/blog';
+import Skeleton from '../../Skeleton';
+import { getSinglePost } from '../../../api/blog';
 import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
 import ReactMarkdown from 'react-markdown';
-import CodeBlock from '../Home/Posts/CodeBlock';
+import CodeBlock from '../Posts/CodeBlock';
 import { withRouter } from 'react-router-dom';
 
 const SkeletonContainer = props => {
