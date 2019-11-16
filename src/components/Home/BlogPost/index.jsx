@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Home/Posts/index.scss';
+import '../../../components/Home/Posts/index.scss';
 import Skeleton from '../../Skeleton';
 import { getSinglePost } from '../../../api/blog';
 import moment from 'moment';
