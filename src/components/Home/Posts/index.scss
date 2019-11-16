@@ -68,6 +68,7 @@
 
         img {
           width: 100%;
+          margin: 1rem 0;
         }
 
         &:last-child {
@@ -87,7 +88,12 @@
         li {
           margin: 0.8rem 0 1rem;
           font-size: 1.1rem;
-          line-height: 1.6rem;
+          line-height: 2.5rem;
+
+          ul li,
+          ol li {
+            line-height: 1.6rem;
+          }
         }
 
         code {
@@ -97,16 +103,6 @@
 
       ol {
         list-style-type: decimal;
-
-        li {
-          p:first-child {
-            font-weight: 600;
-          }
-
-          p {
-            font-weight: normal;
-          }
-        }
       }
 
       blockquote {
@@ -115,8 +111,8 @@
 
         p {
           padding: 0;
-          padding-left: 1rem;
-          margin-bottom: 2rem;
+          padding-left: 2rem;
+          margin: 2rem 0;
         }
       }
 
@@ -124,22 +120,6 @@
       a code {
         font-weight: 600;
         color: #000;
-      }
-
-      h1 {
-        font-weight: 600;
-        margin: 2rem 0;
-        font-size: 1.2rem;
-      }
-
-      h2 {
-        font-weight: 600;
-        padding: 1.8rem 0 1.5rem;
-        font-size: 1.1rem;
-      }
-
-      pre {
-        margin: 1rem 0 !important;
       }
 
       hr {
@@ -155,6 +135,24 @@
           background: #000;
           box-shadow: 24px 0 0 0 #000, -24px 0 0 0 #000;
         }
+      }
+
+      h1 {
+        font-size: 1.4rem;
+        font-weight: 900;
+        padding: 4rem 0 1rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+        font-weight: 900;
+        padding: 4rem 0 1rem;
+      }
+
+      h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 2rem 0 1rem;
       }
     }
   }
