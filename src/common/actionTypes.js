@@ -1,1 +1,2 @@
 export const ERROR_NOTIFY = 'ERROR_NOTIFY';
+export const SAVE_HOME_STATE = 'SAVE_HOME_STATE';

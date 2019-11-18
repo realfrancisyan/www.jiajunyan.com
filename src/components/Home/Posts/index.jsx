@@ -15,8 +15,19 @@ import { clearCache } from '../../../api/cache';
 import ReactMarkdown from 'react-markdown';
 import CodeBlock from './CodeBlock';
 import { Link } from 'react-router-dom';
+import { SAVE_HOME_STATE } from '../../../common/actionTypes';
+import { connect } from 'react-redux';
 
 const socket = openSocket.connect(BASE_URL);
+
+// redux 使用示例，待删除
+const mapStateToProps = state => ({
+  ...state
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSaveState: payload => dispatch({ type: SAVE_HOME_STATE, payload })
+});
 
 const SkeletonContainer = props => {
   if (props.isFirstLoad) {
@@ -282,25 +293,6 @@ class Posts extends React.Component {
     return token;
   }
 
-  async componentDidMount() {
-    this.handleGetTags();
-    this.handleGetInnerHeight();
-    this.handleSetUpWebSocket();
-    this.handleCheckToken();
-    await this.handleGetList();
-    this.handleGetHTMLFontSize();
-
-    // 添加函数节流控制
-    window.addEventListener('scroll', this.onScroll);
-  }
-
-  // 通过 did update 判断文章数量是否有变，有变则需要重新计算每篇文章高度
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.posts !== this.state.posts) {
-      this.handleGetHTMLFontSize();
-    }
-  }
-
   handleGetHTMLFontSize() {
     const { posts } = this.state;
     const postsHeight = posts.map((post, index) => {
@@ -317,7 +309,56 @@ class Posts extends React.Component {
     });
   }
 
+  // 保存状态，用于跳转另外页面后，再返回
+  handleSaveState() {
+    const stateToSave = {
+      ...this.state,
+      pageYOffset: window.pageYOffset // 保存当前浏览的高度
+    };
+
+    // 退出页面时保存状态
+    this.props.onSaveState(stateToSave);
+  }
+
+  // 如果之前加载过这个页面，并从另外一个页面返回，获取之前的 state 状态
+  handleGetPreviousState() {
+    const { homeState } = this.props.state;
+    const hasState = Object.keys(homeState).length > 0;
+
+    // 如果有之前保存的状态，setState 获取之后，scroll 到指定到高度
+    // 这里的 pageYOffset 要重置
+    if (hasState) {
+      this.setState({ ...homeState, pageYOffset: 0 }, () => {
+        window.scrollTo(0, homeState.pageYOffset);
+      });
+    }
+
+    return hasState;
+  }
+
+  async componentDidMount() {
+    // 添加函数节流控制
+    window.addEventListener('scroll', this.onScroll);
+    if (this.handleGetPreviousState()) return;
+    this.handleGetTags();
+    this.handleGetInnerHeight();
+    this.handleSetUpWebSocket();
+    this.handleCheckToken();
+    await this.handleGetList();
+    this.handleGetHTMLFontSize();
+  }
+
+  // 通过 did update 判断文章数量是否有变，有变则需要重新计算每篇文章高度
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.posts !== this.state.posts) {
+      this.handleGetHTMLFontSize();
+    }
+  }
+
   componentWillUnmount() {
+    // 销毁页面前，保存状态
+    this.handleSaveState();
+
     // 移除函数节流
     window.removeEventListener('scroll', this.onScroll);
 
@@ -445,4 +486,6 @@ class Posts extends React.Component {
   }
 }
 
-export default Posts;
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  forwardRef: true
+})(Posts);

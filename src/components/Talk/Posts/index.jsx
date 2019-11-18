@@ -207,13 +207,13 @@ class Posts extends React.Component {
   }
 
   componentDidMount() {
+    // 添加函数节流控制
+    window.addEventListener('scroll', this.onScroll);
+    window.scrollTo(0, 0);
     this.handleGetInnerHeight();
     this.handleGetList();
     this.handleSetUpWebSocket();
     this.handleCheckToken();
-
-    // 添加函数节流控制
-    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillUnmount() {
