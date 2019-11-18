@@ -41,6 +41,7 @@
       h2 {
         font-size: 1.3rem;
         font-weight: 600;
+        line-height: 1.8rem;
 
         &:hover {
           text-decoration: underline;
@@ -61,7 +62,7 @@
     }
 
     .post-overflow {
-      max-height: 20rem;
+      max-height: 40rem;
       overflow: hidden;
       background: #fff;
       position: relative;

@@ -56,7 +56,7 @@ const UserMenuHOC = WrappedComponent => {
 
     render() {
       return (
-        <div className="home-container box700">
+        <div className="home-container">
           <LogOutButton
             handleLogOut={this.handleLogOut}
             token={this.state.token}

@@ -96,7 +96,6 @@ class Posts extends React.Component {
     return new Promise((resolve, reject) => {
       this.setState({
         isFirstLoad: true,
-        skeleton: [],
         posts: [],
         modalIsOpen: false,
         images: []
@@ -107,8 +106,8 @@ class Posts extends React.Component {
   }
 
   async componentDidMount() {
-    this.handleGetInnerHeight();
     await this.handleReset();
+    this.handleGetInnerHeight();
     this.handleGetList();
     window.scrollTo(0, 0);
   }
