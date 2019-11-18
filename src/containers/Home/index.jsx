@@ -11,6 +11,10 @@ class Home extends React.Component {
     this.postsComponent = React.createRef();
   }
 
+  componentDidMount() {
+    document.title = 'Jiajun Yan';
+  }
+
   render() {
     return (
       <div className="home-container box700">
