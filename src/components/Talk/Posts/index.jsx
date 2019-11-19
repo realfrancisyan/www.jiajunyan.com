@@ -236,8 +236,6 @@ class TalkPosts extends React.Component {
     const { talkState } = this.props.state;
     const hasState = Object.keys(talkState).length > 0;
 
-    console.log(talkState);
-
     // 如果有之前保存的状态，setState 获取之后，scroll 到指定到高度
     // 这里的 pageScrollTop 要重置
     if (hasState) {

@@ -311,6 +311,11 @@ class Posts extends React.Component {
     });
   }
 
+  // begin 从其他页面返回后，保存并提取之前浏览的信息和位置。记得还有 pageScrollTop 变量
+  // 包含 handleSaveState，handleGetPreviousState，componentDidMount 中的 if (this.handleGetPreviousState()) return;
+  // 以及 componentWillUnmount 的 this.handleSaveState();
+  // 以及 redux
+
   // 保存状态，用于跳转另外页面后，再返回
   handleSaveState() {
     const stateToSave = {
@@ -339,6 +344,8 @@ class Posts extends React.Component {
 
     return hasState;
   }
+
+  // end 从其他页面返回后，保存并提取之前浏览的信息和位置。记得还有 pageScrollTop 变量
 
   async componentDidMount() {
     // 添加函数节流控制
