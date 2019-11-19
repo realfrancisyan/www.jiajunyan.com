@@ -9,7 +9,7 @@ import { clearCache } from '../../../api/cache';
 
 const socket = openSocket.connect(BASE_URL);
 
-class PostModal extends React.Component {
+class TalkPostModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -133,4 +133,4 @@ class PostModal extends React.Component {
   }
 }
 
-export default PostModal;
+export default TalkPostModal;

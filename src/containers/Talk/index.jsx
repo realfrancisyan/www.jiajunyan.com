@@ -1,14 +1,14 @@
 import React from 'react';
 import './index.scss';
-import Header from '../../components/Talk/Header';
-import Posts from '../../components/Talk/Posts';
+import TalkHeader from '../../components/Talk/Header';
+import TalkPosts from '../../components/Talk/Posts';
 import UserMenuHOC from '../../hoc/UserMenu';
 
-class Home extends React.Component {
+class TalkHome extends React.Component {
   constructor(props) {
     super(props);
     // 添加 ref 到 posts 子组件
-    this.postsComponent = React.createRef();
+    this.talkPostsComponent = React.createRef();
   }
 
   componentDidMount() {
@@ -18,11 +18,11 @@ class Home extends React.Component {
   render() {
     return (
       <div className="box500">
-        <Header></Header>
-        <Posts ref={cd => (this.postsComponent = cd)}></Posts>
+        <TalkHeader></TalkHeader>
+        <TalkPosts ref={cd => (this.talkPostsComponent = cd)}></TalkPosts>
       </div>
     );
   }
 }
 
-export default UserMenuHOC(Home);
+export default UserMenuHOC(TalkHome);

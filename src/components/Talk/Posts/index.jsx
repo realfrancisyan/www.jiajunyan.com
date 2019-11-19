@@ -6,15 +6,27 @@ import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
 import PlusIcon from './images/plus.png';
-import PostModal from '../PostModal';
+import TalkPostModal from '../PostModal';
 import openSocket from 'socket.io-client';
 import { parseToken } from '../../../common';
 import throttle from 'lodash.throttle';
 import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
 import ReactMarkdown from 'react-markdown';
+import { SAVE_TALK_STATE } from '../../../common/actionTypes';
+import { connect } from 'react-redux';
 
 const socket = openSocket.connect(BASE_URL);
+
+let pageScrollTop = 0;
+
+const mapStateToProps = state => ({
+  ...state
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSaveState: payload => dispatch({ type: SAVE_TALK_STATE, payload })
+});
 
 const SkeletonContainer = props => {
   if (props.isFirstLoad) {
@@ -30,7 +42,7 @@ const SkeletonContainer = props => {
   return null;
 };
 
-class Posts extends React.Component {
+class TalkPosts extends React.Component {
   constructor(props) {
     super(props);
 
@@ -70,6 +82,8 @@ class Posts extends React.Component {
     if (innerHeight < outerHeight + scrollTop + 200) {
       this.handleGetList();
     }
+
+    pageScrollTop = scrollTop;
   }
 
   // 获取屏幕高度
@@ -206,9 +220,41 @@ class Posts extends React.Component {
     return token;
   }
 
+  // 保存状态，用于跳转另外页面后，再返回
+  handleSaveState() {
+    const stateToSave = {
+      ...this.state,
+      pageScrollTop // 保存当前浏览的高度
+    };
+
+    // 退出页面时保存状态
+    this.props.onSaveState(stateToSave);
+  }
+
+  // 如果之前加载过这个页面，并从另外一个页面返回，获取之前的 state 状态
+  handleGetPreviousState() {
+    const { talkState } = this.props.state;
+    const hasState = Object.keys(talkState).length > 0;
+
+    console.log(talkState);
+
+    // 如果有之前保存的状态，setState 获取之后，scroll 到指定到高度
+    // 这里的 pageScrollTop 要重置
+    if (hasState) {
+      this.setState({ ...talkState, pageScrollTop: 0 }, () => {
+        setTimeout(() => {
+          window.scrollTo(0, talkState.pageScrollTop);
+        }, 200);
+      });
+    }
+
+    return hasState;
+  }
+
   componentDidMount() {
     // 添加函数节流控制
     window.addEventListener('scroll', this.onScroll);
+    if (this.handleGetPreviousState()) return;
     window.scrollTo(0, 0);
     this.handleGetInnerHeight();
     this.handleGetList();
@@ -217,6 +263,9 @@ class Posts extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log('talk page scroll top - ', pageScrollTop);
+    // 销毁页面前，保存状态
+    this.handleSaveState();
     // 移除函数节流
     window.removeEventListener('scroll', this.onScroll);
 
@@ -288,11 +337,11 @@ class Posts extends React.Component {
           </div>
         ) : null}
         {this.state.postModalIsOpen ? (
-          <PostModal
+          <TalkPostModal
             handleTogglePostModal={this.handleTogglePostModal}
             handleGetList={this.handleGetList}
             handleReset={this.handleReset}
-          ></PostModal>
+          ></TalkPostModal>
         ) : null}
         <ModalGateway>
           {modalIsOpen ? (
@@ -314,4 +363,6 @@ class Posts extends React.Component {
   }
 }
 
-export default Posts;
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  forwardRef: true
+})(TalkPosts);

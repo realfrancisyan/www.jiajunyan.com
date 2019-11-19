@@ -19,8 +19,8 @@ import { SAVE_HOME_STATE } from '../../../common/actionTypes';
 import { connect } from 'react-redux';
 
 const socket = openSocket.connect(BASE_URL);
+let pageScrollTop = 0; // 用于计算页面滚动高度
 
-// redux 使用示例，待删除
 const mapStateToProps = state => ({
   ...state
 });
@@ -120,6 +120,8 @@ class Posts extends React.Component {
     if (innerHeight < outerHeight + scrollTop + 200) {
       this.handleGetList();
     }
+
+    pageScrollTop = scrollTop;
   }
 
   // 获取屏幕高度
@@ -313,7 +315,7 @@ class Posts extends React.Component {
   handleSaveState() {
     const stateToSave = {
       ...this.state,
-      pageYOffset: window.pageYOffset // 保存当前浏览的高度
+      pageScrollTop // 保存当前浏览的高度
     };
 
     // 退出页面时保存状态
@@ -326,10 +328,12 @@ class Posts extends React.Component {
     const hasState = Object.keys(homeState).length > 0;
 
     // 如果有之前保存的状态，setState 获取之后，scroll 到指定到高度
-    // 这里的 pageYOffset 要重置
+    // 这里的 pageScrollTop 要重置
     if (hasState) {
-      this.setState({ ...homeState, pageYOffset: 0 }, () => {
-        window.scrollTo(0, homeState.pageYOffset);
+      this.setState({ ...homeState, pageScrollTop: 0 }, () => {
+        setTimeout(() => {
+          window.scrollTo(0, homeState.pageScrollTop);
+        }, 200);
       });
     }
 
@@ -356,6 +360,7 @@ class Posts extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log('home page scroll top - ', pageScrollTop);
     // 销毁页面前，保存状态
     this.handleSaveState();
 

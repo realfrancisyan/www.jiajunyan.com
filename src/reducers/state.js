@@ -1,16 +1,23 @@
-import { SAVE_HOME_STATE } from '../common/actionTypes';
+import { SAVE_HOME_STATE, SAVE_TALK_STATE } from '../common/actionTypes';
 
 const defaultState = {
-  homeState: {}
+  homeState: {},
+  talkState: {}
 };
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    // 唤起接口错误提示框
+    // 保存首页 state 状态
     case SAVE_HOME_STATE:
       return {
         ...state,
         homeState: action.payload
+      };
+    // 保存首页 state 状态
+    case SAVE_TALK_STATE:
+      return {
+        ...state,
+        talkState: action.payload
       };
 
     default:
