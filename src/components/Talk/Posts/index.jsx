@@ -252,11 +252,11 @@ class TalkPosts extends React.Component {
   componentDidMount() {
     // 添加函数节流控制
     window.addEventListener('scroll', this.onScroll);
+    this.handleSetUpWebSocket();
     if (this.handleGetPreviousState()) return;
     window.scrollTo(0, 0);
     this.handleGetInnerHeight();
     this.handleGetList();
-    this.handleSetUpWebSocket();
     this.handleCheckToken();
   }
 

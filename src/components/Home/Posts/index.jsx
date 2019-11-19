@@ -350,10 +350,10 @@ class Posts extends React.Component {
   async componentDidMount() {
     // 添加函数节流控制
     window.addEventListener('scroll', this.onScroll);
+    this.handleSetUpWebSocket();
     if (this.handleGetPreviousState()) return;
     this.handleGetTags();
     this.handleGetInnerHeight();
-    this.handleSetUpWebSocket();
     this.handleCheckToken();
     await this.handleGetList();
     this.handleGetHTMLFontSize();
