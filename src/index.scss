@@ -17,8 +17,12 @@ code {
 }
 
 .box500 {
-  width: 500px;
+  width: 700px;
   margin: 0 auto 20px;
+
+  @media screen and (max-width: 900px) {
+    width: 500px;
+  }
 
   @media screen and (max-width: 768px) {
     width: 90%;
@@ -27,8 +31,12 @@ code {
 }
 
 .box700 {
-  width: 700px;
+  width: 900px;
   margin: 20px auto;
+
+  @media screen and (max-width: 900px) {
+    width: 700px;
+  }
 
   @media screen and (max-width: 768px) {
     width: 90%;
