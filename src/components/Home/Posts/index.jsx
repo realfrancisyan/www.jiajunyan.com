@@ -368,7 +368,6 @@ class Posts extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('home page scroll top - ', pageScrollTop);
     // 销毁页面前，保存状态
     this.handleSaveState();
 

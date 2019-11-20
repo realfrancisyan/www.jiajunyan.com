@@ -261,7 +261,6 @@ class TalkPosts extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('talk page scroll top - ', pageScrollTop);
     // 销毁页面前，保存状态
     this.handleSaveState();
     // 移除函数节流
