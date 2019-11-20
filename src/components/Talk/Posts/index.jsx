@@ -242,7 +242,7 @@ class TalkPosts extends React.Component {
       this.setState({ ...talkState, pageScrollTop: 0 }, () => {
         setTimeout(() => {
           window.scrollTo(0, talkState.pageScrollTop);
-        }, 200);
+        });
       });
     }
 

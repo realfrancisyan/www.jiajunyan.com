@@ -338,7 +338,7 @@ class Posts extends React.Component {
       this.setState({ ...homeState, pageScrollTop: 0 }, () => {
         setTimeout(() => {
           window.scrollTo(0, homeState.pageScrollTop);
-        }, 200);
+        });
       });
     }
 
