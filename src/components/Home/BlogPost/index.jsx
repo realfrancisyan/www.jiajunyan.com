@@ -8,6 +8,7 @@ import bindAll from 'lodash.bindall';
 import ReactMarkdown from 'react-markdown';
 import CodeBlock from '../Posts/CodeBlock';
 import { withRouter } from 'react-router-dom';
+import './index.scss';
 
 const SkeletonContainer = props => {
   if (props.isFirstLoad) {
@@ -132,7 +133,7 @@ class Posts extends React.Component {
             <div className="posts box500">
               {this.state.posts.map((item, index) => {
                 return (
-                  <div className="post" key={index}>
+                  <div className="post blog-post" key={index}>
                     <div className="top">
                       <div className="left">
                         <h2>{item.title}</h2>
