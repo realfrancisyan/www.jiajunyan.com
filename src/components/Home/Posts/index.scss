@@ -79,12 +79,12 @@
         }
 
         img {
-          width: 100%;
-          padding: 2rem;
+          width: calc(100% - 4rem);
+          margin: 2rem;
           box-sizing: border-box;
 
           @media screen and (max-width: 768px) {
-            padding: 0;
+            width: 100%;
             margin: 1rem 0;
           }
         }
