@@ -230,14 +230,17 @@
     li {
       padding-bottom: 0.5rem;
       cursor: pointer;
+      color: #999;
 
       &.isSelected {
         font-weight: 600;
         list-style-type: disc;
+        color: #000;
       }
 
       &:hover {
         text-decoration: underline;
+        color: #000;
       }
 
       a {
