@@ -11,6 +11,7 @@ src/api/url.js
 
 # production
 /build
+/docs
 
 # misc
 .DS_Store

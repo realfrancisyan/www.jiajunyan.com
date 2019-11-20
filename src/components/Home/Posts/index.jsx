@@ -176,6 +176,7 @@ class Posts extends React.Component {
     });
 
     this.handleGetList();
+    window.scrollTo(0, 0);
   }
 
   // 获取文章列表
