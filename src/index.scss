@@ -18,7 +18,7 @@ code {
 
 .box500 {
   width: 500px;
-  margin: 20px auto;
+  margin: 0 auto 20px;
 
   @media screen and (max-width: 768px) {
     width: 90%;
