@@ -53,7 +53,7 @@ axios.interceptors.response.use(
         if (token) {
           localStorage.removeItem('token');
         }
-        window.location.href = '/#/auth';
+        window.location.href = '/auth';
         Alert.open(data.data);
         break;
 
