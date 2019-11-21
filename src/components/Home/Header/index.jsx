@@ -10,6 +10,10 @@ class Header extends React.Component {
     bindAll(this, ['handleRouteToHomePage']);
   }
 
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   // 返回首页
   handleRouteToHomePage() {
     this.props.history.push('/');
@@ -17,7 +21,9 @@ class Header extends React.Component {
 
   render() {
     return (
-      <header className="home-header">
+      <header
+        className={`home-header ${this.props.type === 'home' ? 'home' : ''}`}
+      >
         <h1 onClick={this.handleRouteToHomePage}>Jiajun Yan</h1>
       </header>
     );

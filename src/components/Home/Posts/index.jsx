@@ -12,8 +12,8 @@ import { parseToken } from '../../../common';
 import throttle from 'lodash.throttle';
 import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
-import ReactMarkdown from 'react-markdown';
-import CodeBlock from './CodeBlock';
+// import ReactMarkdown from 'react-markdown';
+// import CodeBlock from './CodeBlock';
 import { Link } from 'react-router-dom';
 import { SAVE_HOME_STATE } from '../../../common/actionTypes';
 import { connect } from 'react-redux';
@@ -296,21 +296,21 @@ class Posts extends React.Component {
     return token;
   }
 
-  handleGetHTMLFontSize() {
-    const { posts } = this.state;
-    const postsHeight = posts.map((post, index) => {
-      return this[`postElement_${index}`].clientHeight;
-    });
+  // handleGetHTMLFontSize() {
+  //   const { posts } = this.state;
+  //   const postsHeight = posts.map((post, index) => {
+  //     return this[`postElement_${index}`].clientHeight;
+  //   });
 
-    const htmlFontSize = document
-      .getElementsByTagName('html')[0]
-      .style.fontSize.replace('px', '');
+  //   const htmlFontSize = document
+  //     .getElementsByTagName('html')[0]
+  //     .style.fontSize.replace('px', '');
 
-    this.setState({
-      htmlFontSize: +htmlFontSize,
-      postsHeight
-    });
-  }
+  //   this.setState({
+  //     htmlFontSize: +htmlFontSize,
+  //     postsHeight
+  //   });
+  // }
 
   // begin 从其他页面返回后，保存并提取之前浏览的信息和位置。记得还有 pageScrollTop 变量
   // 包含 handleSaveState，handleGetPreviousState，componentDidMount 中的 if (this.handleGetPreviousState()) return;
@@ -357,15 +357,15 @@ class Posts extends React.Component {
     this.handleGetInnerHeight();
     this.handleCheckToken();
     await this.handleGetList();
-    this.handleGetHTMLFontSize();
+    // this.handleGetHTMLFontSize();
   }
 
   // 通过 did update 判断文章数量是否有变，有变则需要重新计算每篇文章高度
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.posts !== this.state.posts) {
-      this.handleGetHTMLFontSize();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if (prevState.posts !== this.state.posts) {
+  //     this.handleGetHTMLFontSize();
+  //   }
+  // }
 
   componentWillUnmount() {
     // 销毁页面前，保存状态
@@ -409,7 +409,7 @@ class Posts extends React.Component {
                         </div>
                       ) : null}
                     </div>
-                    <div className="bottom">
+                    {/* <div className="bottom">
                       <div
                         className="post-overflow"
                         ref={div => (this[`postElement_${index}`] = div)}
@@ -451,7 +451,7 @@ class Posts extends React.Component {
                           </div>
                         ) : null}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 );
               })}

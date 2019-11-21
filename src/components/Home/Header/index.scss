@@ -7,4 +7,12 @@
     cursor: pointer;
     display: inline-block;
   }
+
+  &.home {
+    margin: 16rem 0;
+
+    h1 {
+      font-size: 5rem;
+    }
+  }
 }
