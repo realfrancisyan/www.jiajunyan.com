@@ -11,6 +11,10 @@
   &.home {
     margin: 16rem 0;
 
+    @media screen and (max-width: 768px) {
+      margin: 12rem 0;
+    }
+
     h1 {
       font-size: 5rem;
     }
