@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Home from './containers/Home';
 import Auth from './containers/Auth';
 import Talk from './containers/Talk';
@@ -25,6 +25,7 @@ class App extends React.Component {
           <Route path="/auth" component={Auth} />
           <Route path="/talk" component={Talk} />
           <Route path="/post/:id?" component={BlogPost} />
+          <Redirect to="/" />
         </Switch>
       </div>
     );
