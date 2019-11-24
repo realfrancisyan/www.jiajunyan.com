@@ -4,14 +4,13 @@
 /node_modules
 /.pnp
 .pnp.js
-src/api/url.js
+# src/api/url.js
 
 # testing
 /coverage
 
 # production
 /build
-docs
 
 # misc
 .DS_Store
