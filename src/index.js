@@ -15,8 +15,9 @@ const BaiduAnalyze = props => {
   (function() {
     var hm = document.createElement('script');
     hm.src = 'https://hm.baidu.com/hm.js?dc52a22618aa1d7ef655e38dbec28daf';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
+    // var s = document.getElementsByTagName('script')[0];
+    // s.parentNode.insertBefore(hm, s);
+    document.head.appendChild(hm);
   })();
   return children;
 };
