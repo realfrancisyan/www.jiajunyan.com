@@ -8,11 +8,26 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
+const BaiduAnalyze = props => {
+  let children = props.children;
+  // eslint-disable-next-line
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?dc52a22618aa1d7ef655e38dbec28daf';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+  return children;
+};
+
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={App} />
+        <BaiduAnalyze>
+          <Route path="/" component={App} />
+        </BaiduAnalyze>
       </Switch>
     </BrowserRouter>
   </Provider>,
