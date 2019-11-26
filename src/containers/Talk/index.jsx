@@ -3,6 +3,7 @@ import './index.scss';
 import TalkHeader from '../../components/Talk/Header';
 import TalkPosts from '../../components/Talk/Posts';
 import UserMenuHOC from '../../hoc/UserMenu';
+import Footer from '../../components/Home/Footer';
 
 class TalkHome extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class TalkHome extends React.Component {
       <div className="box500-talk">
         <TalkHeader></TalkHeader>
         <TalkPosts ref={cd => (this.talkPostsComponent = cd)}></TalkPosts>
+        <Footer></Footer>
       </div>
     );
   }
