@@ -10,15 +10,14 @@ import { store } from './store';
 
 const BaiduAnalyze = props => {
   let children = props.children;
-  // eslint-disable-next-line
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?dc52a22618aa1d7ef655e38dbec28daf';
-    // var s = document.getElementsByTagName('script')[0];
-    // s.parentNode.insertBefore(hm, s);
-    document.head.appendChild(hm);
-  })();
+
+  if (window._hmt) {
+    const path = props.location.pathname;
+    if (path) {
+      window._hmt.push(['_trackPageview', path]);
+    }
+  }
+
   return children;
 };
 
