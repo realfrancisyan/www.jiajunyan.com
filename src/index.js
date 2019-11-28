@@ -8,26 +8,11 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
-const BaiduAnalyze = props => {
-  let children = props.children;
-
-  if (window._hmt) {
-    const path = props.location.pathname;
-    if (path) {
-      window._hmt.push(['_trackPageview', path]);
-    }
-  }
-
-  return children;
-};
-
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <BaiduAnalyze>
-          <Route path="/" component={App} />
-        </BaiduAnalyze>
+        <Route path="/" component={App} />
       </Switch>
     </BrowserRouter>
   </Provider>,
