@@ -10,10 +10,6 @@ class Header extends React.Component {
     bindAll(this, ['handleRouteToHomePage']);
   }
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
   // 返回首页
   handleRouteToHomePage() {
     this.props.history.push('/');

@@ -7,15 +7,13 @@ import * as serviceWorker from './serviceWorker';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import ReactGA from 'react-ga';
-ReactGA.initialize('UA-117155465-1');
-ReactGA.pageview(window.location.pathname + window.location.search);
+import withTracker from './withTracker';
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={App} />
+        <Route path="/" component={withTracker(App)} />
       </Switch>
     </BrowserRouter>
   </Provider>,
