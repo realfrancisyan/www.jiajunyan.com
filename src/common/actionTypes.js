@@ -1,3 +1,4 @@
 export const ERROR_NOTIFY = 'ERROR_NOTIFY';
 export const SAVE_HOME_STATE = 'SAVE_HOME_STATE';
 export const SAVE_TALK_STATE = 'SAVE_TALK_STATE';
+export const SAVE_DIARY_STATE = 'SAVE_DIARY_STATE';

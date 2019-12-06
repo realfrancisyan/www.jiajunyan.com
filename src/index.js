@@ -8,6 +8,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import withTracker from './withTracker';
+import 'babel-polyfill';
 
 ReactDOM.render(
   <Provider store={store}>

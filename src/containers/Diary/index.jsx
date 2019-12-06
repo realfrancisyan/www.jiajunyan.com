@@ -1,11 +1,11 @@
 import React from 'react';
 import './index.scss';
-import TalkHeader from '../../components/Talk/Header';
-import TalkPosts from '../../components/Talk/Posts';
+import DiaryHeader from '../../components/Diary/Header';
+import DiaryPosts from '../../components/Diary/Posts';
 import UserMenuHOC from '../../hoc/UserMenu';
 import Footer from '../../components/Home/Footer';
 
-class TalkHome extends React.Component {
+class DiaryHome extends React.Component {
   constructor(props) {
     super(props);
     // 添加 ref 到 posts 子组件
@@ -13,18 +13,18 @@ class TalkHome extends React.Component {
   }
 
   componentDidMount() {
-    document.title = 'Talk - Jiajun Yan';
+    document.title = 'Diary - Jiajun Yan';
   }
 
   render() {
     return (
       <div className="box500-talk">
-        <TalkHeader></TalkHeader>
-        <TalkPosts ref={cd => (this.postsComponent = cd)}></TalkPosts>
+        <DiaryHeader></DiaryHeader>
+        <DiaryPosts ref={cd => (this.postsComponent = cd)}></DiaryPosts>
         <Footer></Footer>
       </div>
     );
   }
 }
 
-export default UserMenuHOC(TalkHome);
+export default UserMenuHOC(DiaryHome);

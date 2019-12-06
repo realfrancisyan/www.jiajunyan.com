@@ -1,8 +1,13 @@
-import { SAVE_HOME_STATE, SAVE_TALK_STATE } from '../common/actionTypes';
+import {
+  SAVE_HOME_STATE,
+  SAVE_TALK_STATE,
+  SAVE_DIARY_STATE
+} from '../common/actionTypes';
 
 const defaultState = {
   homeState: {},
-  talkState: {}
+  talkState: {},
+  diaryState: {}
 };
 
 export default (state = defaultState, action) => {
@@ -13,11 +18,17 @@ export default (state = defaultState, action) => {
         ...state,
         homeState: action.payload
       };
-    // 保存首页 state 状态
+    // 保存 talk state 状态
     case SAVE_TALK_STATE:
       return {
         ...state,
         talkState: action.payload
+      };
+    // 保存日记 state 状态
+    case SAVE_DIARY_STATE:
+      return {
+        ...state,
+        diaryState: action.payload
       };
 
     default:
