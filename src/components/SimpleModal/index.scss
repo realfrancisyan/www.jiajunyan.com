@@ -1,0 +1,27 @@
+.simple-modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+  top: 0;
+  left: 0;
+}
+
+.close-btn {
+  position: fixed;
+  cursor: pointer;
+  top: 1rem;
+  right: 1rem;
+  background: rgb(131, 131, 131);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(45deg);
+  img {
+    width: 50%;
+  }
+}

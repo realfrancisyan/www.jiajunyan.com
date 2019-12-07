@@ -2,7 +2,13 @@ import React from 'react';
 import '../../Talk/Posts/index.scss';
 import './index.scss';
 import Skeleton from '../../Skeleton';
-import { getPosts, deletePost } from '../../../api/diary';
+import {
+  getPosts,
+  deletePost,
+  likePost,
+  createComment,
+  deleteComment
+} from '../../../api/diary';
 import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
@@ -15,6 +21,7 @@ import { BASE_URL } from '../../../api/url';
 import ReactMarkdown from 'react-markdown';
 import { SAVE_TALK_STATE } from '../../../common/actionTypes';
 import { connect } from 'react-redux';
+import SimpleModal from '../../SimpleModal';
 import LikedIcon from './images/icon-liked.svg';
 import UnlikedIcon from './images/icon-unliked.svg';
 import ChatIcon from './images/icon-chat.svg';
@@ -45,37 +52,51 @@ const SkeletonContainer = props => {
   return null;
 };
 
-const SocialArea = props => {
+const SocialArea = ({ post, handleAddComment, handleLikePost, user }) => {
   return (
     <div className="social">
       <div className="control">
         <div className="like-area">
-          <img src={UnlikedIcon} alt="unliked" />
-          <span>1</span>
+          <img
+            src={post.likes.includes(user.uid) ? LikedIcon : UnlikedIcon}
+            alt="unliked"
+            onClick={() => handleLikePost(post, user)}
+          />
+          {post.likes.length ? <span>{post.likes.length}</span> : null}
         </div>
-        <div className="chat">
+        <div className="chat" onClick={() => handleAddComment(post)}>
           <img src={ChatIcon} alt="chat" />
         </div>
       </div>
 
-      <div className="comments">
-        <div className="comment">
-          <span className="user">jiajun：</span>
-          <p>
-            我是不是很棒，我是不是很棒，我是不是很棒，我是不是很棒，我是不是很棒，
-          </p>
+      {post.comments.length ? (
+        <div className="comments">
+          {post.comments.map(comment => {
+            return (
+              <div
+                key={comment.id}
+                onClick={() =>
+                  handleAddComment({ ...post, commentUid: comment.uid })
+                }
+              >
+                {!comment.toUid ? (
+                  <div className="comment">
+                    <span className="user">{comment.user}：</span>
+                    <p>{comment.content}</p>
+                  </div>
+                ) : (
+                  <div className="comment">
+                    <span className="user">{comment.user}</span>
+                    <p className="reply">回复</p>
+                    <span className="user">{comment.toUser}：</span>
+                    <p>{comment.content}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
-        <div className="comment">
-          <span className="user">sslty</span>
-          <p className="reply">回复</p>
-          <span className="user">jiajun：</span>
-          <p>我是不是很棒</p>
-        </div>
-        <div className="comment">
-          <span className="user">jiajun：</span>
-          <p>我是不是很棒</p>
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };
@@ -97,7 +118,11 @@ class DiaryPosts extends React.Component {
       page: {
         pageNo: 1,
         pageSize: 10
-      }
+      },
+      show: false, // 展示评论弹框
+      comment: '', // 评论
+      isSubmit: false, // 是否正在提交
+      currentPost: {} // 当前正在评论的文章
     };
 
     bindAll(this, [
@@ -106,7 +131,12 @@ class DiaryPosts extends React.Component {
       'handleGetList',
       'handleRefresh',
       'handleReset',
-      'onScroll'
+      'onScroll',
+      'handleAddComment',
+      'handleCloseModal',
+      'onCommentChange',
+      'handleSubmit',
+      'handleLikePost'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 1500);
@@ -122,6 +152,109 @@ class DiaryPosts extends React.Component {
     }
 
     pageScrollTop = scrollTop;
+  }
+
+  // 点赞
+  handleLikePost(post, user) {
+    if (this.isLike) return;
+    this.isLike = true;
+
+    const params = { postId: post.id };
+    if (post.likes.includes(user.uid)) params.isDelete = true;
+
+    likePost(params)
+      .then(res => {
+        if (res.message === 'SUCCESS') {
+          const likes = res.data;
+          post.likes = likes;
+
+          const posts = this.state.posts.map(item => {
+            if (item.id === post.id) {
+              item = post;
+            }
+
+            return item;
+          });
+
+          this.setState({
+            posts
+          });
+        }
+      })
+      .catch(err => {
+        console.error('请求点赞错误 - ', err);
+      })
+      .finally(() => {
+        this.isLike = false;
+      });
+  }
+
+  // 提交评论
+  handleSubmit() {
+    if (this.state.isSubmit) return;
+    this.setState({
+      isSubmit: true
+    });
+
+    const { currentPost, comment } = this.state;
+
+    const params = { postId: currentPost.id, content: comment };
+    if (currentPost.commentUid) {
+      params.toUid = currentPost.commentUid;
+    }
+
+    createComment(params)
+      .then(res => {
+        if (res.message === 'SUCCESS') {
+          console.log(res.data);
+
+          const comments = res.data;
+          currentPost.comments = comments;
+
+          const posts = this.state.posts.map(item => {
+            if (item.id === currentPost.id) {
+              item = currentPost;
+            }
+
+            return item;
+          });
+
+          this.setState({
+            posts
+          });
+
+          this.handleCloseModal();
+        }
+      })
+      .finally(() => {
+        this.setState({
+          isSubmit: false
+        });
+      });
+  }
+
+  onCommentChange(e) {
+    this.setState({
+      comment: e.target.value
+    });
+  }
+
+  // 添加评论
+  handleAddComment(post) {
+    this.setState({
+      show: true,
+      comment: '',
+      currentPost: post
+    });
+  }
+
+  // 关闭评论弹窗
+  handleCloseModal() {
+    this.setState({
+      show: false,
+      comment: '',
+      currentPost: {}
+    });
   }
 
   // 获取屏幕高度
@@ -355,7 +488,14 @@ class DiaryPosts extends React.Component {
                     />
                   </div>
 
-                  <SocialArea></SocialArea>
+                  {this.state.user && (
+                    <SocialArea
+                      handleAddComment={this.handleAddComment}
+                      handleLikePost={this.handleLikePost}
+                      post={item}
+                      user={this.state.user}
+                    ></SocialArea>
+                  )}
                   <p className="date">
                     {moment(item.createdAt).format('YYYY-MM-DD')}
                   </p>
@@ -391,6 +531,32 @@ class DiaryPosts extends React.Component {
         <div className="loader">
           {this.state.hasMore ? '正在加载...' : '全部加载完毕'}
         </div>
+
+        <SimpleModal
+          show={this.state.show}
+          handleCloseModal={this.handleCloseModal}
+        >
+          <div className="post-modal comment-modal">
+            <h2>评论...</h2>
+            <div className="post-form">
+              <textarea
+                placeholder="请输入评论"
+                cols="30"
+                rows="10"
+                onChange={this.onCommentChange}
+              ></textarea>
+              <button
+                onClick={this.handleSubmit}
+                disabled={!this.state.comment || this.state.isSubmit}
+              >
+                提交
+              </button>
+              <p style={{ opacity: this.state.isSubmit ? '1' : '0' }}>
+                正在提交...
+              </p>
+            </div>
+          </div>
+        </SimpleModal>
       </div>
     );
   }
