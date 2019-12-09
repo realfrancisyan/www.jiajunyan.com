@@ -53,3 +53,10 @@ code {
     margin: 1rem auto;
   }
 }
+
+input {
+  /* Remove First */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
