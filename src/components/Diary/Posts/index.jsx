@@ -6,8 +6,7 @@ import {
   getPosts,
   deletePost,
   likePost,
-  createComment,
-  deleteComment
+  createComment
 } from '../../../api/diary';
 import moment from 'moment';
 import Carousel, { Modal, ModalGateway } from 'react-images';
@@ -206,8 +205,6 @@ class DiaryPosts extends React.Component {
     createComment(params)
       .then(res => {
         if (res.message === 'SUCCESS') {
-          console.log(res.data);
-
           const comments = res.data;
           currentPost.comments = comments;
 
