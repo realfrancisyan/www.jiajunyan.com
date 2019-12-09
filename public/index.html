@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/logo192.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1"
+    />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Jiajun Yan's Official Website" />
     <meta name="referrer" content="no-referrer" />
@@ -43,7 +46,7 @@
       if (
         location.protocol !== 'https:' &&
         !location.host.startsWith('127.0.0.1') &&
-          !location.host.startsWith('localhost')
+        !location.host.startsWith('localhost')
       ) {
         location.protocol = 'https:';
       }
