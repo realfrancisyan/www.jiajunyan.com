@@ -41,13 +41,12 @@
     <!-- Force redirect to HTTPS -->
     <script>
       if (
-        !(
-          window.location.host.startsWith('127.0.0.1') ||
-          window.location.host.startsWith('localhost')
-        ) &&
-        window.location.protocol != 'https:'
-      )
-        window.location.protocol = 'https:';
+        location.protocol !== 'https:' &&
+        !location.host.startsWith('127.0.0.1') &&
+          !location.host.startsWith('localhost')
+      ) {
+        location.protocol = 'https:';
+      }
     </script>
   </body>
 </html>
