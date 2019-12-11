@@ -478,7 +478,7 @@ class DiaryPosts extends React.Component {
                       <h2>{item.title}</h2>
                     </div>
                     {this.state.user && this.state.user.role ? (
-                      <div className="right">
+                      <div className="right diary">
                         <span onClick={() => this.handleDeletePost(item)}>
                           删除
                         </span>
