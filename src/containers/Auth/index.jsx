@@ -40,7 +40,7 @@ class Auth extends React.Component {
   }
 
   handleSubmit() {
-    const { username, password } = this.state;
+    let { username, password } = this.state;
     if (!username || !password) return;
 
     const onSuccess = res => {
@@ -56,6 +56,8 @@ class Auth extends React.Component {
     this.setState({
       isSubmit: true
     });
+
+    username = username.trim();
 
     login({ username, password })
       .then(onSuccess)
