@@ -58,9 +58,20 @@ const SocialArea = ({ post, handleAddComment, handleLikePost, user }) => {
       <div className="control">
         <div className="like-area">
           <img
-            src={post.likes.includes(user.uid) ? LikedIcon : UnlikedIcon}
+            src={LikedIcon}
             alt="unliked"
             onClick={() => handleLikePost(post, user)}
+            style={{
+              display: post.likes.includes(user.uid) ? 'block' : 'none'
+            }}
+          />
+          <img
+            src={UnlikedIcon}
+            alt="unliked"
+            onClick={() => handleLikePost(post, user)}
+            style={{
+              display: !post.likes.includes(user.uid) ? 'block' : 'none'
+            }}
           />
           {post.likes.length ? <span>{post.likes.length}</span> : null}
         </div>
