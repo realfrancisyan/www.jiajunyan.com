@@ -79,34 +79,34 @@ const SocialArea = ({ post, handleAddComment, handleLikePost, user }) => {
         </div>
       </div>
 
-      {post.comments.length ? (
-        <div className="comments">
-          {post.comments.map(comment => {
-            return (
-              <div
-                key={comment.id}
-                onClick={() =>
-                  handleAddComment({ ...post, commentUid: comment.uid })
-                }
-              >
-                {!comment.toUid ? (
-                  <div className="comment">
-                    <span className="user">{comment.user}：</span>
-                    <p>{comment.content}</p>
-                  </div>
-                ) : (
-                  <div className="comment">
-                    <span className="user">{comment.user}</span>
-                    <p className="reply">回复</p>
-                    <span className="user">{comment.toUser}：</span>
-                    <p>{comment.content}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      ) : null}
+      <div className="comments">
+        {post.comments.length
+          ? post.comments.map(comment => {
+              return (
+                <div
+                  key={comment.id}
+                  onClick={() =>
+                    handleAddComment({ ...post, commentUid: comment.uid })
+                  }
+                >
+                  {!comment.toUid ? (
+                    <div className="comment">
+                      <span className="user">{comment.user}：</span>
+                      <p>{comment.content}</p>
+                    </div>
+                  ) : (
+                    <div className="comment">
+                      <span className="user">{comment.user}</span>
+                      <p className="reply">回复</p>
+                      <span className="user">{comment.toUser}：</span>
+                      <p>{comment.content}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          : null}
+      </div>
     </div>
   );
 };
