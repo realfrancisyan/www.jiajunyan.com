@@ -173,23 +173,38 @@ class DiaryPosts extends React.Component {
     const params = { postId: post.id };
     if (post.likes.includes(user.uid)) params.isDelete = true;
 
+    // 前端添加点击后立马点赞，优化因调接口慢的问题
+    if (post.likes.includes(user.uid)) {
+      const index = post.likes.indexOf(user.uid);
+      if (index > -1) {
+        post.likes.splice(index, 1);
+      }
+    } else {
+      post.likes.push(user.uid);
+    }
+
+    const _setLikes = post => {
+      const posts = this.state.posts.map(item => {
+        if (item.id === post.id) {
+          item = post;
+        }
+
+        return item;
+      });
+
+      this.setState({
+        posts
+      });
+    };
+
+    _setLikes(post);
+
     likePost(params)
       .then(res => {
         if (res.message === 'SUCCESS') {
           const likes = res.data;
           post.likes = likes;
-
-          const posts = this.state.posts.map(item => {
-            if (item.id === post.id) {
-              item = post;
-            }
-
-            return item;
-          });
-
-          this.setState({
-            posts
-          });
+          _setLikes(post);
         }
       })
       .catch(err => {
