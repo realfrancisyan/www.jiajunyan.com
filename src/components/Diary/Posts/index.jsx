@@ -79,7 +79,7 @@ const SocialArea = ({ post, handleAddComment, handleLikePost, user }) => {
         </div>
       </div>
 
-      <div className="comments">
+      <div className="diary-comments">
         {post.comments.length
           ? post.comments.map(comment => {
               return (
@@ -90,12 +90,12 @@ const SocialArea = ({ post, handleAddComment, handleLikePost, user }) => {
                   }
                 >
                   {!comment.toUid ? (
-                    <div className="comment">
+                    <div className="diary-comment">
                       <span className="user">{comment.user}：</span>
                       <p>{comment.content}</p>
                     </div>
                   ) : (
-                    <div className="comment">
+                    <div className="diary-comment">
                       <span className="user">{comment.user}</span>
                       <p className="reply">回复</p>
                       <span className="user">{comment.toUser}：</span>
