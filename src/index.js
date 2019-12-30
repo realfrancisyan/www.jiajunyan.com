@@ -4,7 +4,7 @@ import './App.scss';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { Route, Switch, HashRouter } from 'react-router-dom';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import withTracker from './withTracker';
@@ -12,11 +12,11 @@ import 'babel-polyfill';
 
 ReactDOM.render(
   <Provider store={store}>
-    <HashRouter>
+    <BrowserRouter>
       <Switch>
         <Route path="/" component={withTracker(App)} />
       </Switch>
-    </HashRouter>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
