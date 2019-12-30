@@ -30,16 +30,5 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-
-    <!-- Force redirect to HTTPS -->
-    <script>
-      if (
-        location.protocol !== 'https:' &&
-        !location.host.startsWith('127.0.0.1') &&
-        !location.host.startsWith('localhost')
-      ) {
-        location.protocol = 'https:';
-      }
-    </script>
   </body>
 </html>
