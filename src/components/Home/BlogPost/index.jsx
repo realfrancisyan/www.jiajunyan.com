@@ -147,7 +147,13 @@ class Posts extends React.Component {
                         renderers={{
                           code: CodeBlock,
                           image: props => {
-                            const images = [{ src: props.src }];
+                            const image = {
+                              src: props.src.replace(
+                                'auracloudapp.oss-cn-shenzhen.aliyuncs.com',
+                                'assets.auracloudapp.com'
+                              )
+                            };
+                            const images = [image];
                             const showLightBox = () => {
                               this.setState({
                                 images,
@@ -157,7 +163,7 @@ class Posts extends React.Component {
                             return (
                               <img
                                 className="post-img"
-                                src={props.src}
+                                src={image.src}
                                 alt={props.title}
                                 onClick={showLightBox}
                               />

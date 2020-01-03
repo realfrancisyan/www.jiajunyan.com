@@ -304,7 +304,13 @@ class TalkPosts extends React.Component {
                       source={item.body}
                       renderers={{
                         image: props => {
-                          const images = [{ src: props.src }];
+                          const image = {
+                            src: props.src.replace(
+                              'auracloudapp.oss-cn-shenzhen.aliyuncs.com',
+                              'assets.auracloudapp.com'
+                            )
+                          };
+                          const images = [image];
                           const showLightBox = () => {
                             this.setState({
                               images,
@@ -314,7 +320,7 @@ class TalkPosts extends React.Component {
                           return (
                             <img
                               className="post-img"
-                              src={props.src}
+                              src={image.src}
                               alt={props.title}
                               onClick={showLightBox}
                             />
