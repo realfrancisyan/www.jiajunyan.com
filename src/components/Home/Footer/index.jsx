@@ -17,47 +17,58 @@ class Footer extends React.Component {
 
   render() {
     return (
-      <footer className="footer">
-        <h2 onClick={this.handleRouteToHomePage}>Jiajun Yan</h2>
-        <div className="block">
-          <h3>社交网络</h3>
-          <ul>
-            <li>
-              <a
-                href="https://www.linkedin.com/in/yanjiajun"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/realfrancisyan"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Github
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://instagram.com/jiajun.yan.travel"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Instagram
-              </a>
-            </li>
-          </ul>
+      <footer>
+        <div className="footer">
+          <h2 onClick={this.handleRouteToHomePage}>Jiajun Yan</h2>
+          <div className="block">
+            <h3>社交网络</h3>
+            <ul>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/yanjiajun"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/realfrancisyan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Github
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://instagram.com/jiajun.yan.travel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Instagram
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="block">
+            <h3>其他内容</h3>
+            <ul>
+              <li>
+                <Link to="/talk">Talk</Link>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="block">
-          <h3>其他内容</h3>
-          <ul>
-            <li>
-              <Link to="/talk">Talk</Link>
-            </li>
-          </ul>
+        <div className="record">
+          <a
+            href="http://www.beian.miit.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            粤ICP备19153485号
+          </a>
         </div>
       </footer>
     );
