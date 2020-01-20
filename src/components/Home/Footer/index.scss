@@ -71,9 +71,29 @@ footer {
 
 .record {
   margin-top: 2rem;
+  display: flex;
+  align-items: center;
 
   a {
     text-decoration: none;
     color: #999;
+    margin-right: 2rem;
+    display: flex;
+    align-items: center;
+
+    img {
+      margin-right: 0.2rem;
+      width: 1rem;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+
+    a {
+      margin-bottom: 1rem;
+    }
   }
 }

@@ -3,6 +3,7 @@ import './index.scss';
 import bindAll from 'lodash.bindall';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import BeiAnIcon from './images/beian.png';
 
 class Footer extends React.Component {
   constructor(props) {
@@ -67,7 +68,15 @@ class Footer extends React.Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            粤ICP备19153485号
+            粤 ICP 备 19153485 号
+          </a>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010502001478"
+          >
+            <img src={BeiAnIcon} alt="bei an" />
+            粤公网安备 44010502001478 号
           </a>
         </div>
       </footer>
