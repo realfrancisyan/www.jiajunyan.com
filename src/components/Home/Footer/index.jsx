@@ -73,7 +73,7 @@ class Footer extends React.Component {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010502001478"
+            href="http://www.beian.gov.cn"
           >
             <img src={BeiAnIcon} alt="bei an" />
             粤公网安备 44010502001478 号
