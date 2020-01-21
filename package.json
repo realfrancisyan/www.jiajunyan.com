@@ -48,6 +48,6 @@
     ]
   },
   "devDependencies": {
-    "node-upyun-plugin": "^1.1.0"
+    "node-upyun-plugin": "^1.2.1"
   }
 }
