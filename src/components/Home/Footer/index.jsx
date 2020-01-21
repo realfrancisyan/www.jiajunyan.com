@@ -1,6 +1,7 @@
 import React from 'react';
 import './index.scss';
 import bindAll from 'lodash.bindall';
+import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import BeiAnIcon from './images/beian.png';
@@ -61,6 +62,9 @@ class Footer extends React.Component {
               </li>
             </ul>
           </div>
+        </div>
+        <div className="copy-right">
+          © 2017-{moment().format('YYYY')} Jiajun Yan. All rights reserved.
         </div>
         <div className="record">
           <a

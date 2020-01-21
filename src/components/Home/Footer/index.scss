@@ -13,7 +13,7 @@ footer {
   }
 
   h2 {
-    font-weight: 700;
+    font-weight: 900;
     font-size: 1.5rem;
     line-height: 2rem;
     cursor: pointer;
@@ -37,7 +37,7 @@ footer {
 
     h3 {
       font-size: 1.2rem;
-      font-weight: 700;
+      font-weight: 900;
       line-height: 2rem;
       width: 10rem;
     }
@@ -69,8 +69,12 @@ footer {
   }
 }
 
+.copy-right {
+  margin: 2rem 0 1rem 0;
+  font-weight: 700;
+}
+
 .record {
-  margin-top: 2rem;
   display: flex;
   align-items: center;
 
