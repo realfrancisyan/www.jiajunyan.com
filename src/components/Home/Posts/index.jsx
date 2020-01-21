@@ -92,6 +92,7 @@ class Posts extends React.Component {
         pageSize: 10
       },
       tagList: [],
+      tagListObject: {},
       currentType: '',
       htmlFontSize: 0,
       postsHeight: [] // 用于判断显示每篇文章的阅读更多
@@ -158,8 +159,13 @@ class Posts extends React.Component {
   handleGetTags() {
     const onSuccess = res => {
       if (res.message === 'SUCCESS') {
+        const tagListObject = res.data.reduce((result, item) => {
+          result[item.type] = item;
+          return result;
+        }, {});
         this.setState({
-          tagList: [{ name: '全部', type: '' }, ...res.data]
+          tagList: [{ name: '全部', type: '' }, ...res.data],
+          tagListObject
         });
       }
     };
@@ -339,7 +345,6 @@ class Posts extends React.Component {
     this.handleGetInnerHeight();
     this.handleCheckToken();
     await this.handleGetList();
-    // this.handleGetHTMLFontSize();
   }
 
   componentWillUnmount() {
@@ -371,7 +376,16 @@ class Posts extends React.Component {
                   <div className="post" key={index}>
                     <div className="top">
                       <div className="left">
-                        <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
+                        <p>
+                          {moment(item.createdAt).format('YYYY-MM-DD')}{' '}
+                          {Object.keys(this.state.tagListObject).length > 0 ? (
+                            <span>
+                              · {this.state.tagListObject[item.type].name}
+                            </span>
+                          ) : (
+                            ''
+                          )}
+                        </p>
                         <Link to={`/post/${item.id}`}>
                           <h2>{item.title}</h2>
                         </Link>
