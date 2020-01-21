@@ -4,7 +4,7 @@ import bindAll from 'lodash.bindall';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import BeiAnIcon from './images/beian.png';
+// import BeiAnIcon from './images/beian.png';
 
 class Footer extends React.Component {
   constructor(props) {

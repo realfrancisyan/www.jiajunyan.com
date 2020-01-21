@@ -377,7 +377,7 @@ class Posts extends React.Component {
                     <div className="top">
                       <div className="left">
                         <p>
-                          {moment(item.createdAt).format('YYYY-MM-DD')}{' '}
+                          {moment(item.createdAt).format('YYYY年MM月DD日')}{' '}
                           {Object.keys(this.state.tagListObject).length > 0 ? (
                             <span>
                               · {this.state.tagListObject[item.type].name}
