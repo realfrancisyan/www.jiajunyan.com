@@ -12,8 +12,6 @@ import { parseToken } from '../../../common';
 import throttle from 'lodash.throttle';
 import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
-// import ReactMarkdown from 'react-markdown';
-// import CodeBlock from './CodeBlock';
 import { Link } from 'react-router-dom';
 import { SAVE_HOME_STATE } from '../../../common/actionTypes';
 import { connect } from 'react-redux';
@@ -109,7 +107,7 @@ class Posts extends React.Component {
       'handleSelectTag'
     ]);
 
-    this.handleGetList = throttle(this.handleGetList, 1500);
+    this.handleGetList = throttle(this.handleGetList, 1000);
   }
 
   onScroll() {
@@ -296,22 +294,6 @@ class Posts extends React.Component {
     return token;
   }
 
-  // handleGetHTMLFontSize() {
-  //   const { posts } = this.state;
-  //   const postsHeight = posts.map((post, index) => {
-  //     return this[`postElement_${index}`].clientHeight;
-  //   });
-
-  //   const htmlFontSize = document
-  //     .getElementsByTagName('html')[0]
-  //     .style.fontSize.replace('px', '');
-
-  //   this.setState({
-  //     htmlFontSize: +htmlFontSize,
-  //     postsHeight
-  //   });
-  // }
-
   // begin 从其他页面返回后，保存并提取之前浏览的信息和位置。记得还有 pageScrollTop 变量
   // 包含 handleSaveState，handleGetPreviousState，componentDidMount 中的 if (this.handleGetPreviousState()) return;
   // 以及 componentWillUnmount 的 this.handleSaveState();
@@ -360,13 +342,6 @@ class Posts extends React.Component {
     // this.handleGetHTMLFontSize();
   }
 
-  // 通过 did update 判断文章数量是否有变，有变则需要重新计算每篇文章高度
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if (prevState.posts !== this.state.posts) {
-  //     this.handleGetHTMLFontSize();
-  //   }
-  // }
-
   componentWillUnmount() {
     // 销毁页面前，保存状态
     this.handleSaveState();
@@ -396,10 +371,10 @@ class Posts extends React.Component {
                   <div className="post" key={index}>
                     <div className="top">
                       <div className="left">
+                        <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
                         <Link to={`/post/${item.id}`}>
                           <h2>{item.title}</h2>
                         </Link>
-                        <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
                       </div>
                       {this.state.token ? (
                         <div className="right">
@@ -409,49 +384,6 @@ class Posts extends React.Component {
                         </div>
                       ) : null}
                     </div>
-                    {/* <div className="bottom">
-                      <div
-                        className="post-overflow"
-                        ref={div => (this[`postElement_${index}`] = div)}
-                      >
-                        <ReactMarkdown
-                          className={'markdown'}
-                          source={item.body}
-                          renderers={{
-                            code: CodeBlock,
-                            image: props => {
-                              const images = [{ src: props.src }];
-                              const showLightBox = () => {
-                                this.setState({
-                                  images,
-                                  modalIsOpen: !modalIsOpen
-                                });
-                              };
-                              return (
-                                <img
-                                  className="post-img"
-                                  src={props.src}
-                                  alt={props.title}
-                                  onClick={showLightBox}
-                                />
-                              );
-                            }
-                          }}
-                        />
-
-                        {this.state.postsHeight[index] + 1 >=
-                        this.state.htmlFontSize * 40 ? (
-                          <div className="unfold-field">
-                            <div className="unfold-field_mask"></div> 
-                            <Link to={`/post/${item.id}`}>
-                              <div className="unfold-field_text">
-                                <span>查看全文</span>
-                              </div>
-                            </Link>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div> */}
                   </div>
                 );
               })}

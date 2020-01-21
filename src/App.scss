@@ -3,7 +3,87 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -20,7 +100,17 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 /* HTML5 display-role reset for older browsers */
 
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block;
 }
 
@@ -28,15 +118,20 @@ body {
   line-height: 1;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
-blockquote:before, blockquote:after, q:before, q:after {
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
   content: '';
   content: none;
 }
@@ -46,12 +141,15 @@ table {
   border-spacing: 0;
 }
 
-input[type=search]::-webkit-search-cancel-button, input[type=search]::-webkit-search-decoration, input[type=search]::-webkit-search-results-button, input[type=search]::-webkit-search-results-decoration {
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
 
-input[type=search] {
+input[type='search'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   -webkit-box-sizing: content-box;
@@ -69,7 +167,9 @@ textarea {
  * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.
  */
 
-audio, canvas, video {
+audio,
+canvas,
+video {
   display: inline-block;
   *display: inline;
   *zoom: 1;
@@ -123,7 +223,8 @@ a:focus {
  * Improve readability when focused and also mouse hovered in all browsers.
  */
 
-a:active, a:hover {
+a:active,
+a:hover {
   outline: 0;
 }
 
@@ -188,7 +289,10 @@ legend {
  * 3. Improve appearance and consistency in all browsers.
  */
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font-size: 100%;
   /* 1 */
   margin: 0;
@@ -204,7 +308,8 @@ button, input, select, textarea {
  * the UA stylesheet.
  */
 
-button, input {
+button,
+input {
   line-height: normal;
 }
 
@@ -215,7 +320,8 @@ button, input {
  * Correct `select` style inheritance in Firefox 4+ and Opera.
  */
 
-button, select {
+button,
+select {
   text-transform: none;
 }
 
@@ -245,7 +351,8 @@ input[type="reset"], input[type="submit"] {
  * Re-set default cursor for disabled elements.
  */
 
-button[disabled], html input[disabled] {
+button[disabled],
+html input[disabled] {
   cursor: default;
 }
 
@@ -256,7 +363,8 @@ button[disabled], html input[disabled] {
  *    Known issue: excess padding remains in IE 6.
  */
 
-input[type="checkbox"], input[type="radio"] {
+input[type='checkbox'],
+input[type='radio'] {
   box-sizing: border-box;
   /* 1 */
   padding: 0;
@@ -273,7 +381,7 @@ input[type="checkbox"], input[type="radio"] {
  *    (include `-moz` to future-proof).
  */
 
-input[type="search"] {
+input[type='search'] {
   -webkit-appearance: textfield;
   /* 1 */
   -moz-box-sizing: content-box;
@@ -287,7 +395,8 @@ input[type="search"] {
  * on OS X.
  */
 
-input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration {
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -295,7 +404,8 @@ input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webki
  * Remove inner padding and border in Firefox 3+.
  */
 
-button::-moz-focus-inner, input::-moz-focus-inner {
+button::-moz-focus-inner,
+input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
@@ -321,7 +431,11 @@ table {
   border-spacing: 0;
 }
 
-html, button, input, select, textarea {
+html,
+button,
+input,
+select,
+textarea {
   color: #222;
 }
 
@@ -352,6 +466,6 @@ textarea {
 .chromeframe {
   margin: 0.2em 0;
   background: #ccc;
-  color: #000;
+  color: #222;
   padding: 0.2em 0;
 }

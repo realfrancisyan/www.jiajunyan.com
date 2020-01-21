@@ -31,7 +31,7 @@
 
     .left {
       a {
-        color: #000;
+        color: #222;
         text-decoration: none;
       }
     }
@@ -42,7 +42,7 @@
 
       h2 {
         font-size: 2rem;
-        font-weight: 600;
+        font-weight: 900;
         line-height: 2.8rem;
 
         &:hover {
@@ -52,8 +52,9 @@
 
       p {
         font-size: 1.2rem;
-        color: #999;
+        font-weight: 600;
         padding: 0.5rem 0;
+        color: rgba(0, 0, 0, 0.2);
       }
 
       .right {
@@ -159,7 +160,7 @@
       a,
       a code {
         font-weight: 600;
-        color: #000;
+        color: #222;
       }
 
       hr {
@@ -172,8 +173,8 @@
           height: 3px;
           margin: 2em auto;
           border-radius: 50%;
-          background: #000;
-          box-shadow: 24px 0 0 0 #000, -24px 0 0 0 #000;
+          background: #222;
+          box-shadow: 24px 0 0 0 #222, -24px 0 0 0 #222;
         }
       }
 
@@ -270,12 +271,12 @@
       &.isSelected {
         font-weight: 600;
         list-style-type: disc;
-        color: #000;
+        color: #222;
       }
 
       &:hover {
         text-decoration: underline;
-        color: #000;
+        color: #222;
       }
 
       a {
@@ -283,7 +284,7 @@
         color: #999;
 
         &:hover {
-          color: #000;
+          color: #222;
         }
       }
     }
