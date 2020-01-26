@@ -136,8 +136,8 @@ class Posts extends React.Component {
                   <div className="post blog-post" key={index}>
                     <div className="top">
                       <div className="left">
+                        <p>{moment(item.createdAt).format('YYYY年MM月DD日')}</p>
                         <h2>{item.title}</h2>
-                        <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
                       </div>
                     </div>
                     <div className="bottom">
