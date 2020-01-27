@@ -1,17 +1,38 @@
+.blog-posts {
+  width: 100%;
+}
+
 .blog-container .post.blog-post .top {
-  h2:hover {
-    text-decoration: none !important;
+  .left {
+    margin: 12rem 0 15rem;
+  }
+
+  h2 {
+    font-size: 4rem;
+    line-height: 5rem;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+
+  p {
+    font-size: 1.5rem;
   }
 
   @media screen and (max-width: 768px) {
+    .left {
+      margin: 8rem 0 10rem;
+    }
+
     h2 {
-      font-size: 1.3rem;
+      font-size: 3rem;
       font-weight: 900;
-      line-height: 1.8rem;
+      line-height: 4rem;
     }
 
     p {
-      font-size: 0.9rem;
+      font-size: 1.2rem;
       color: #999;
       padding: 0.5rem 0;
     }

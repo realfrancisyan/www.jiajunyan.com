@@ -130,7 +130,7 @@ class Posts extends React.Component {
             skeleton={this.state.skeleton}
           ></SkeletonContainer>
           {!this.state.isFirstLoad ? (
-            <div className="posts box500">
+            <div className="posts">
               {this.state.posts.map((item, index) => {
                 return (
                   <div className="post blog-post" key={index}>
