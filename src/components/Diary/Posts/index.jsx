@@ -146,10 +146,16 @@ class DiaryPosts extends React.Component {
       'handleCloseModal',
       'onCommentChange',
       'handleSubmit',
+      'onScroll',
       'handleLikePost'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 1500);
+  }
+
+  onScroll() {
+    const scrollTop = document.documentElement.scrollTop;
+    pageScrollTop = scrollTop;
   }
 
   // 点赞
@@ -426,6 +432,8 @@ class DiaryPosts extends React.Component {
   }
 
   componentDidMount() {
+    // 添加函数节流控制
+    window.addEventListener('scroll', this.onScroll);
     this.handleSetUpWebSocket();
     if (this.handleGetPreviousState()) return;
     window.scrollTo(0, 0);
@@ -435,6 +443,8 @@ class DiaryPosts extends React.Component {
   }
 
   componentWillUnmount() {
+    // 移除函数节流
+    window.removeEventListener('scroll', this.onScroll);
     // 销毁页面前，保存状态
     this.handleSaveState();
 

@@ -105,10 +105,16 @@ class Posts extends React.Component {
       'handleGetList',
       'handleRefresh',
       'handleReset',
+      'onScroll',
       'handleSelectTag'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 1000);
+  }
+
+  onScroll() {
+    const scrollTop = document.documentElement.scrollTop;
+    pageScrollTop = scrollTop;
   }
 
   // 获取屏幕高度
@@ -323,6 +329,9 @@ class Posts extends React.Component {
   // end 从其他页面返回后，保存并提取之前浏览的信息和位置。记得还有 pageScrollTop 变量
 
   async componentDidMount() {
+    // 添加函数节流控制
+    window.addEventListener('scroll', this.onScroll);
+
     this.handleSetUpWebSocket();
     if (this.handleGetPreviousState()) return;
     this.handleGetTags();
@@ -332,6 +341,9 @@ class Posts extends React.Component {
   }
 
   componentWillUnmount() {
+    // 移除函数节流
+    window.removeEventListener('scroll', this.onScroll);
+
     // 销毁页面前，保存状态
     this.handleSaveState();
 

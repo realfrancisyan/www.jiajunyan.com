@@ -68,10 +68,16 @@ class TalkPosts extends React.Component {
       'handleTogglePostModal',
       'handleGetList',
       'handleRefresh',
-      'handleReset'
+      'handleReset',
+      'onScroll'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 1500);
+  }
+
+  onScroll() {
+    const scrollTop = document.documentElement.scrollTop;
+    pageScrollTop = scrollTop;
   }
 
   // 获取屏幕高度
@@ -238,6 +244,9 @@ class TalkPosts extends React.Component {
   }
 
   componentDidMount() {
+    // 添加函数节流控制
+    window.addEventListener('scroll', this.onScroll);
+
     this.handleSetUpWebSocket();
     if (this.handleGetPreviousState()) return;
     window.scrollTo(0, 0);
@@ -247,6 +256,9 @@ class TalkPosts extends React.Component {
   }
 
   componentWillUnmount() {
+    // 移除函数节流
+    window.removeEventListener('scroll', this.onScroll);
+
     // 销毁页面前，保存状态
     this.handleSaveState();
 
