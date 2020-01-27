@@ -15,6 +15,7 @@ import { clearCache } from '../../../api/cache';
 import ReactMarkdown from 'react-markdown';
 import { SAVE_TALK_STATE } from '../../../common/actionTypes';
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const socket = openSocket.connect(BASE_URL);
 
@@ -67,23 +68,10 @@ class TalkPosts extends React.Component {
       'handleTogglePostModal',
       'handleGetList',
       'handleRefresh',
-      'handleReset',
-      'onScroll'
+      'handleReset'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 1500);
-  }
-
-  onScroll() {
-    const innerHeight = document.querySelector('#root').clientHeight;
-    const outerHeight = document.documentElement.clientHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    //加载更多操作
-    if (innerHeight < outerHeight + scrollTop + 200) {
-      this.handleGetList();
-    }
-
-    pageScrollTop = scrollTop;
   }
 
   // 获取屏幕高度
@@ -250,8 +238,6 @@ class TalkPosts extends React.Component {
   }
 
   componentDidMount() {
-    // 添加函数节流控制
-    window.addEventListener('scroll', this.onScroll);
     this.handleSetUpWebSocket();
     if (this.handleGetPreviousState()) return;
     window.scrollTo(0, 0);
@@ -263,8 +249,6 @@ class TalkPosts extends React.Component {
   componentWillUnmount() {
     // 销毁页面前，保存状态
     this.handleSaveState();
-    // 移除函数节流
-    window.removeEventListener('scroll', this.onScroll);
 
     this.setState = (state, callback) => {
       return;
@@ -282,56 +266,66 @@ class TalkPosts extends React.Component {
         ></SkeletonContainer>
         {!this.state.isFirstLoad ? (
           <div className="posts">
-            {this.state.posts.map((item, index) => {
-              return (
-                <div className="post" key={index}>
-                  <div className="top">
-                    <div className="left">
-                      <h2>{item.title}</h2>
-                      <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
-                    </div>
-                    {this.state.token ? (
-                      <div className="right">
-                        <span onClick={() => this.handleDeletePost(item)}>
-                          删除
-                        </span>
-                      </div>
-                    ) : null}
-                  </div>
-                  <div className="bottom">
-                    <ReactMarkdown
-                      className={'markdown'}
-                      source={item.body}
-                      renderers={{
-                        image: props => {
-                          const image = {
-                            src: props.src.replace(
-                              'auracloudapp.oss-cn-shenzhen.aliyuncs.com',
-                              'assets.auracloudapp.com'
-                            )
-                          };
-                          const images = [image];
-                          const showLightBox = () => {
-                            this.setState({
-                              images,
-                              modalIsOpen: !modalIsOpen
-                            });
-                          };
-                          return (
-                            <img
-                              className="post-img"
-                              src={image.src}
-                              alt={props.title}
-                              onClick={showLightBox}
-                            />
-                          );
-                        }
-                      }}
-                    />
-                  </div>
+            <InfiniteScroll
+              loadMore={this.handleGetList}
+              hasMore={this.state.hasMore}
+              loader={
+                <div className="loader" key={0}>
+                  正在加载...
                 </div>
-              );
-            })}
+              }
+            >
+              {this.state.posts.map((item, index) => {
+                return (
+                  <div className="post" key={index}>
+                    <div className="top">
+                      <div className="left">
+                        <h2>{item.title}</h2>
+                        <p>{moment(item.createdAt).format('YYYY-MM-DD')}</p>
+                      </div>
+                      {this.state.token ? (
+                        <div className="right">
+                          <span onClick={() => this.handleDeletePost(item)}>
+                            删除
+                          </span>
+                        </div>
+                      ) : null}
+                    </div>
+                    <div className="bottom">
+                      <ReactMarkdown
+                        className={'markdown'}
+                        source={item.body}
+                        renderers={{
+                          image: props => {
+                            const image = {
+                              src: props.src.replace(
+                                'auracloudapp.oss-cn-shenzhen.aliyuncs.com',
+                                'assets.auracloudapp.com'
+                              )
+                            };
+                            const images = [image];
+                            const showLightBox = () => {
+                              this.setState({
+                                images,
+                                modalIsOpen: !modalIsOpen
+                              });
+                            };
+                            return (
+                              <img
+                                className="post-img"
+                                src={image.src}
+                                alt={props.title}
+                                onClick={showLightBox}
+                              />
+                            );
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </InfiniteScroll>
           </div>
         ) : null}
         {this.state.token ? (
@@ -358,9 +352,6 @@ class TalkPosts extends React.Component {
             有新文章
           </h4>
         ) : null}
-        <div className="loader">
-          {this.state.hasMore ? '正在加载...' : '全部加载完毕'}
-        </div>
       </div>
     );
   }

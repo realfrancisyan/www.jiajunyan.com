@@ -4,7 +4,7 @@ import bindAll from 'lodash.bindall';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-// import BeiAnIcon from './images/beian.png';
+import BeiAnIcon from './images/beian.png';
 
 class Footer extends React.Component {
   constructor(props) {
@@ -66,7 +66,7 @@ class Footer extends React.Component {
         <div className="copy-right">
           © 2017-{moment().format('YYYY')} Jiajun Yan. All rights reserved.
         </div>
-        {/* <div className="record">
+        <div className="record">
           <a
             href="http://www.beian.miit.gov.cn/"
             target="_blank"
@@ -82,7 +82,7 @@ class Footer extends React.Component {
             <img src={BeiAnIcon} alt="bei an" />
             粤公网安备 44010502001478 号
           </a>
-        </div> */}
+        </div>
       </footer>
     );
   }

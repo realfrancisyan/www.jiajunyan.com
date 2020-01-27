@@ -15,6 +15,7 @@ import { clearCache } from '../../../api/cache';
 import { Link } from 'react-router-dom';
 import { SAVE_HOME_STATE } from '../../../common/actionTypes';
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const socket = openSocket.connect(BASE_URL);
 let pageScrollTop = 0; // 用于计算页面滚动高度
@@ -104,30 +105,15 @@ class Posts extends React.Component {
       'handleGetList',
       'handleRefresh',
       'handleReset',
-      'onScroll',
       'handleSelectTag'
     ]);
 
     this.handleGetList = throttle(this.handleGetList, 1000);
   }
 
-  onScroll() {
-    const innerHeight = document.querySelector('#root').clientHeight;
-    const outerHeight = document.documentElement.clientHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    //加载更多操作
-    if (innerHeight < outerHeight + scrollTop + 200) {
-      this.handleGetList();
-    }
-
-    pageScrollTop = scrollTop;
-  }
-
   // 获取屏幕高度
   handleGetInnerHeight() {
-    const handleSetInnerHeight = () => {
-      this.handleCreateSkeleton();
-    };
+    const handleSetInnerHeight = () => this.handleCreateSkeleton();
     handleSetInnerHeight();
   }
 
@@ -184,7 +170,7 @@ class Posts extends React.Component {
   }
 
   // 获取文章列表
-  handleGetList() {
+  async handleGetList() {
     let { pageNo, pageSize } = this.state.page;
     const params = {
       pageNo,
@@ -232,7 +218,7 @@ class Posts extends React.Component {
 
     // 列表使用缓存
     const useCache = true;
-    getPosts(params, useCache)
+    await getPosts(params, useCache)
       .then(onSuccess)
       .finally(() => {
         this.isLoading = false;
@@ -337,8 +323,6 @@ class Posts extends React.Component {
   // end 从其他页面返回后，保存并提取之前浏览的信息和位置。记得还有 pageScrollTop 变量
 
   async componentDidMount() {
-    // 添加函数节流控制
-    window.addEventListener('scroll', this.onScroll);
     this.handleSetUpWebSocket();
     if (this.handleGetPreviousState()) return;
     this.handleGetTags();
@@ -350,9 +334,6 @@ class Posts extends React.Component {
   componentWillUnmount() {
     // 销毁页面前，保存状态
     this.handleSaveState();
-
-    // 移除函数节流
-    window.removeEventListener('scroll', this.onScroll);
 
     this.setState = (state, callback) => {
       return;
@@ -371,42 +352,49 @@ class Posts extends React.Component {
           ></SkeletonContainer>
           {!this.state.isFirstLoad ? (
             <div className="posts box500">
-              {this.state.posts.map((item, index) => {
-                return (
-                  <div className="post" key={index}>
-                    <div className="top">
-                      <div className="left">
-                        <p>
-                          {moment(item.createdAt).format('YYYY年MM月DD日')}{' '}
-                          {Object.keys(this.state.tagListObject).length > 0 ? (
-                            <span>
-                              · {this.state.tagListObject[item.type].name}
-                            </span>
-                          ) : (
-                            ''
-                          )}
-                        </p>
-                        <Link to={`/post/${item.id}`}>
-                          <h2>{item.title}</h2>
-                        </Link>
-                      </div>
-                      {this.state.token ? (
-                        <div className="right">
-                          <span onClick={() => this.handleDeletePost(item)}>
-                            删除
-                          </span>
-                        </div>
-                      ) : null}
-                    </div>
+              <InfiniteScroll
+                loadMore={this.handleGetList}
+                hasMore={this.state.hasMore}
+                loader={
+                  <div className="loader" key={0}>
+                    正在加载...
                   </div>
-                );
-              })}
+                }
+              >
+                {this.state.posts.map((item, index) => {
+                  return (
+                    <div className="post" key={index}>
+                      <div className="top">
+                        <div className="left">
+                          <p>
+                            {moment(item.createdAt).format('YYYY年MM月DD日')}{' '}
+                            {Object.keys(this.state.tagListObject).length >
+                            0 ? (
+                              <span>
+                                · {this.state.tagListObject[item.type].name}
+                              </span>
+                            ) : (
+                              ''
+                            )}
+                          </p>
+                          <Link to={`/post/${item.id}`}>
+                            <h2>{item.title}</h2>
+                          </Link>
+                        </div>
+                        {this.state.token ? (
+                          <div className="right">
+                            <span onClick={() => this.handleDeletePost(item)}>
+                              删除
+                            </span>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  );
+                })}
+              </InfiniteScroll>
             </div>
           ) : null}
-
-          <div className="loader">
-            {this.state.hasMore ? '正在加载...' : '全部加载完毕'}
-          </div>
         </div>
 
         <TagContainer
