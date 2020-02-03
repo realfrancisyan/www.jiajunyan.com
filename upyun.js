@@ -7,4 +7,4 @@ const us = new UpyunService({
   folderPath: 'build'
 });
 
-us.upload();
+us.upload({ removeAll: true });
