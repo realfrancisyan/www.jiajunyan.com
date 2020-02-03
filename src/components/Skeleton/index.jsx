@@ -59,7 +59,7 @@ class Skeleton extends React.Component {
 
   render() {
     return (
-      <div className="home-container box500 skeleton">
+      <div className="home-container box700 skeleton">
         <Loader
           innerWidth={this.state.innerWidth}
           skeletonSize={this.state.skeletonSize}

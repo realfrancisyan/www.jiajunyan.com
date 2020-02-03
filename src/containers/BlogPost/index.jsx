@@ -6,7 +6,7 @@ import Footer from '../../components/Home/Footer';
 class BlogPosts extends React.Component {
   render() {
     return (
-      <div className="home-container box700">
+      <div className="home-container box900">
         <Header></Header>
         <Posts></Posts>
         <Footer></Footer>

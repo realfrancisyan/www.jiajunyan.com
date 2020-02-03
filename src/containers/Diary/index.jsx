@@ -17,7 +17,7 @@ class DiaryHome extends React.Component {
 
   render() {
     return (
-      <div className="box500-talk">
+      <div className="box500">
         <DiaryHeader></DiaryHeader>
         <DiaryPosts ref={cd => (this.postsComponent = cd)}></DiaryPosts>
         <Footer></Footer>

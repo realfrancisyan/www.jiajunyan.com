@@ -75,7 +75,7 @@ class Auth extends React.Component {
 
   render() {
     return (
-      <div className="auth-container box500">
+      <div className="auth-container box700">
         <div className="form">
           <input
             type="text"

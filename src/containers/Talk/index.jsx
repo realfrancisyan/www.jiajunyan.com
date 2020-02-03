@@ -17,7 +17,7 @@ class TalkHome extends React.Component {
 
   render() {
     return (
-      <div className="box500-talk">
+      <div className="box500">
         <TalkHeader></TalkHeader>
         <TalkPosts ref={cd => (this.postsComponent = cd)}></TalkPosts>
         <Footer></Footer>

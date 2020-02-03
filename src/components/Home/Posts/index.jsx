@@ -378,7 +378,7 @@ class Posts extends React.Component {
             skeleton={this.state.skeleton}
           ></SkeletonContainer>
           {!this.state.isFirstLoad ? (
-            <div className="posts box500">
+            <div className="posts box700">
               <InfiniteScroll
                 loadMore={this.handleGetList}
                 hasMore={this.state.hasMore}
