@@ -1,3 +1,3 @@
 # www.jiajunyan.com
 
-可于 [http://www.jiajunyan.com](http://www.jiajunyan.com) 浏览。
+可于 [httpz://jiajunyan.com](httpz://jiajunyan.com) 浏览。
