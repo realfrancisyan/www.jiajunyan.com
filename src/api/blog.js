@@ -9,6 +9,10 @@ export const createPost = (data, useCache = false) => {
   return request.post(`${BASE_URL}/blog/post/create`, data, useCache);
 };
 
+export const editPost = (data, useCache = false) => {
+  return request.post(`${BASE_URL}/blog/post/edit`, data, useCache);
+};
+
 export const deletePost = (data, useCache = false) => {
   return request.delete(`${BASE_URL}/blog/post/delete`, data, useCache);
 };

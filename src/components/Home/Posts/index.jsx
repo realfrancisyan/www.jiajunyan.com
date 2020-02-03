@@ -82,6 +82,8 @@ class Posts extends React.Component {
       isFirstLoad: true,
       skeleton: [],
       posts: [],
+      postId: '', // 指定某个 post，用于修改
+      isEditPost: false, // 是否修改文章
       modalIsOpen: false,
       images: [],
       postModalIsOpen: false,
@@ -102,6 +104,7 @@ class Posts extends React.Component {
     bindAll(this, [
       'toggleModal',
       'handleTogglePostModal',
+      'handleToggleEditPostModal',
       'handleGetList',
       'handleRefresh',
       'handleReset',
@@ -267,7 +270,19 @@ class Posts extends React.Component {
 
   // 创建文章 modal
   handleTogglePostModal() {
-    this.setState(state => ({ postModalIsOpen: !state.postModalIsOpen }));
+    this.setState(state => ({
+      postModalIsOpen: !state.postModalIsOpen,
+      isEditPost: false
+    }));
+  }
+
+  // 修改文章 modal
+  handleToggleEditPostModal(id) {
+    this.setState(state => ({
+      postModalIsOpen: !state.postModalIsOpen,
+      isEditPost: true,
+      postId: id
+    }));
   }
 
   // 建立 web socket 连接
@@ -394,7 +409,14 @@ class Posts extends React.Component {
                           </Link>
                         </div>
                         {this.state.token ? (
-                          <div className="right">
+                          <div className="bottom">
+                            <span
+                              onClick={() =>
+                                this.handleToggleEditPostModal(item.id)
+                              }
+                            >
+                              修改
+                            </span>
                             <span onClick={() => this.handleDeletePost(item)}>
                               删除
                             </span>
@@ -425,6 +447,8 @@ class Posts extends React.Component {
             handleTogglePostModal={this.handleTogglePostModal}
             handleGetList={this.handleGetList}
             handleReset={this.handleReset}
+            isEditPost={this.state.isEditPost}
+            postId={this.state.postId}
           ></PostModal>
         ) : null}
         <ModalGateway>

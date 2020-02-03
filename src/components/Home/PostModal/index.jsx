@@ -2,7 +2,12 @@ import React from 'react';
 import './index.scss';
 import PlusIcon from '../Posts/images/plus.png';
 import bindAll from 'lodash.bindall';
-import { createPost, getTags } from '../../../api/blog';
+import {
+  createPost,
+  getTags,
+  getSinglePost,
+  editPost
+} from '../../../api/blog';
 import openSocket from 'socket.io-client';
 import { BASE_URL } from '../../../api/url';
 import { clearCache } from '../../../api/cache';
@@ -26,12 +31,17 @@ const TagDropdown = props => {
 class PostModal extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log(props);
+
     this.state = {
       title: '',
       content: '',
       tag: 0,
       isSubmit: false,
-      tagList: []
+      tagList: [],
+      isEditPost: props.isEditPost,
+      postId: props.postId
     };
 
     bindAll(this, [
@@ -74,7 +84,7 @@ class PostModal extends React.Component {
   }
 
   handleSubmit() {
-    const { title, content, tag } = this.state;
+    const { title, content, tag, postId, isEditPost } = this.state;
     if (!title || !content || tag === '') return;
 
     const onSuccess = res => {
@@ -93,7 +103,28 @@ class PostModal extends React.Component {
       isSubmit: true
     });
 
-    createPost({ title, content, type: tag })
+    const update = { title, content, type: tag };
+
+    if (!isEditPost) {
+      this.handleCreatePost(update, onSuccess);
+    } else {
+      update.id = postId;
+      this.handleEditPost(update, onSuccess);
+    }
+  }
+
+  handleCreatePost(update, onSuccess) {
+    createPost(update)
+      .then(onSuccess)
+      .finally(() => {
+        this.setState({
+          isSubmit: false
+        });
+      });
+  }
+
+  handleEditPost(update, onSuccess) {
+    editPost(update)
       .then(onSuccess)
       .finally(() => {
         this.setState({
@@ -121,6 +152,28 @@ class PostModal extends React.Component {
     }
   }
 
+  // 获取修改文章内容
+  handleGetSinglePost() {
+    const { isEditPost, postId } = this.state;
+    if (!isEditPost) return;
+
+    const onSuccess = res => {
+      if (res.message === 'SUCCESS') {
+        const { title, body, type } = res.data;
+
+        this.setState({
+          title,
+          content: body,
+          tag: type
+        });
+      }
+    };
+
+    getSinglePost({ id: postId })
+      .then(onSuccess)
+      .catch(err => console.error('请求获取修改文章失败 - ', err));
+  }
+
   handleReset() {
     if (typeof this.props.handleReset === 'function') {
       this.props.handleReset();
@@ -129,6 +182,7 @@ class PostModal extends React.Component {
 
   componentDidMount() {
     this.handleGetTags();
+    this.handleGetSinglePost();
   }
 
   componentWillUnmount() {
@@ -140,17 +194,19 @@ class PostModal extends React.Component {
   render() {
     return (
       <div className="post-modal">
-        <h2>新建文章</h2>
+        <h2>{this.state.isEditPost ? '修改文章' : '新建文章'}</h2>
         <div className="post-form">
           <input
             type="text"
             placeholder="请输入标题"
+            value={this.state.title}
             onChange={this.handleChangeTitle}
           />
           <textarea
             placeholder="请输入正文"
             cols="30"
             rows="10"
+            value={this.state.content}
             onChange={this.handleChangeContent}
           ></textarea>
 

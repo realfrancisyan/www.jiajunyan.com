@@ -1,8 +1,7 @@
 import React from 'react';
 import bindAll from 'lodash.bindall';
-import './index.scss';
-import Header from '../../components/Talk/Header';
 import { login } from '../../api/user';
+import './index.scss';
 
 class Auth extends React.Component {
   constructor(props) {
@@ -53,13 +52,9 @@ class Auth extends React.Component {
       }
     };
 
-    this.setState({
-      isSubmit: true
-    });
+    this.setState({ isSubmit: true });
 
-    username = username.trim();
-
-    login({ username, password })
+    login({ username: username.trim(), password })
       .then(onSuccess)
       .finally(() => {
         this.setState({
@@ -81,7 +76,6 @@ class Auth extends React.Component {
   render() {
     return (
       <div className="auth-container box500">
-        <Header></Header>
         <div className="form">
           <input
             type="text"
