@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.scss';
 import DiaryHeader from '../../components/Diary/Header';
 import DiaryPosts from '../../components/Diary/Posts';
 import UserMenuHOC from '../../hoc/UserMenu';

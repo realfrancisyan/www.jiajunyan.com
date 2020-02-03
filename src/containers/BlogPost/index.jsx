@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.scss';
 import Header from '../../components/Home/Header';
 import Posts from '../../components/Home/BlogPost';
 import Footer from '../../components/Home/Footer';

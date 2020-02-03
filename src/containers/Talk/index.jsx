@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.scss';
 import TalkHeader from '../../components/Talk/Header';
 import TalkPosts from '../../components/Talk/Posts';
 import UserMenuHOC from '../../hoc/UserMenu';
