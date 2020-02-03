@@ -53,10 +53,10 @@
 
       .bottom {
         margin-top: 10px;
-        cursor: pointer;
         color: rgb(224, 49, 49);
 
         span {
+          cursor: pointer;
           margin-right: 10px;
           &:first-child {
             color: grey;
