@@ -13,11 +13,11 @@ footer {
   }
 
   h2 {
+    display: inline-block;
+    cursor: pointer;
     font-weight: 900;
     font-size: 1.5rem;
     line-height: 2rem;
-    cursor: pointer;
-    display: inline-block;
 
     @media screen and (max-width: 768px) {
       padding-right: 1rem;
@@ -70,9 +70,9 @@ footer {
 }
 
 .copy-right {
-  margin: 2rem 0 1rem 0;
+  margin: 2rem 0 1rem;
   font-weight: 700;
-  color: rgba($color: #000000, $alpha: 0.5);
+  color: rgba($color: #000, $alpha: 0.5);
 }
 
 .record {

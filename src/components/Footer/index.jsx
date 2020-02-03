@@ -1,14 +1,33 @@
 import React from 'react';
-import './index.scss';
 import bindAll from 'lodash.bindall';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import BeiAnIcon from './images/beian.png';
+import './index.scss';
 
 class Footer extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      blocks: [
+        {
+          name: '社交网络',
+          list: [
+            { href: 'https://www.linkedin.com/in/yanjiajun', name: 'LinkedIn' },
+            { href: 'https://github.com/realfrancisyan', name: 'Github' },
+            {
+              href: 'https://instagram.com/jiajun.yan.travel',
+              name: 'Instagram'
+            }
+          ]
+        },
+        {
+          name: '其他内容',
+          list: [{ href: '/talk', name: 'Talk' }]
+        }
+      ]
+    };
 
     bindAll(this, ['handleRouteToHomePage']);
   }
@@ -22,46 +41,28 @@ class Footer extends React.Component {
       <footer>
         <div className="footer">
           <h2 onClick={this.handleRouteToHomePage}>Jiajun Yan</h2>
-          <div className="block">
-            <h3>社交网络</h3>
-            <ul>
-              <li>
-                <a
-                  href="https://www.linkedin.com/in/yanjiajun"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/realfrancisyan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Github
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://instagram.com/jiajun.yan.travel"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Instagram
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="block">
-            <h3>其他内容</h3>
-            <ul>
-              <li>
-                <Link to="/talk">Talk</Link>
-              </li>
-            </ul>
-          </div>
+          {this.state.blocks.map(block => {
+            return (
+              <div className="block">
+                <h3>{block.name}</h3>
+                <ul>
+                  {block.list.map(item => {
+                    return (
+                      <li>
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.name}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            );
+          })}
         </div>
         <div className="copy-right">
           © 2017-{moment().format('YYYY')} Jiajun Yan. All rights reserved.

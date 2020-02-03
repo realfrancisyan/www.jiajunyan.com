@@ -2,7 +2,7 @@ import React from 'react';
 import TalkHeader from '../../components/Talk/Header';
 import TalkPosts from '../../components/Talk/Posts';
 import UserMenuHOC from '../../hoc/UserMenu';
-import Footer from '../../components/Home/Footer';
+import Footer from '../../components/Footer';
 
 class TalkHome extends React.Component {
   constructor(props) {

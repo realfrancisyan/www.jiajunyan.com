@@ -2,7 +2,7 @@ import React from 'react';
 import DiaryHeader from '../../components/Diary/Header';
 import DiaryPosts from '../../components/Diary/Posts';
 import UserMenuHOC from '../../hoc/UserMenu';
-import Footer from '../../components/Home/Footer';
+import Footer from '../../components/Footer';
 
 class DiaryHome extends React.Component {
   constructor(props) {

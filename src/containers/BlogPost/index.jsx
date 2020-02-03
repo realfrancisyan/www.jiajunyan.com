@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../components/Home/Header';
 import Posts from '../../components/Home/BlogPost';
-import Footer from '../../components/Home/Footer';
+import Footer from '../../components/Footer';
 
 class BlogPosts extends React.Component {
   render() {
