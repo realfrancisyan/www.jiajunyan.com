@@ -64,12 +64,12 @@ const TagContainer = props => {
         })}
       </ul>
 
-      <h2>其他内容</h2>
+      {/* <h2>其他内容</h2>
       <ul>
         <li>
           <Link to="/talk">Talk</Link>
         </li>
-      </ul>
+      </ul> */}
     </div>
   );
 };

@@ -21,11 +21,11 @@ class Footer extends React.Component {
               name: 'Instagram'
             }
           ]
-        },
-        {
-          name: '其他内容',
-          list: [{ href: '/talk', name: 'Talk' }]
         }
+        // {
+        //   name: '其他内容',
+        //   list: [{ href: '/talk', name: 'Talk' }]
+        // }
       ]
     };
 
