@@ -3,7 +3,6 @@ import '../../../components/Home/Posts/index.scss';
 import Skeleton from '../../Skeleton';
 import { getSinglePost } from '../../../api/blog';
 import moment from 'moment';
-import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
 import ReactMarkdown from 'react-markdown';
 import CodeBlock from '../Posts/CodeBlock';
@@ -32,12 +31,11 @@ class Posts extends React.Component {
       isFirstLoad: true,
       skeleton: [],
       posts: [],
-      modalIsOpen: false,
       images: [],
       id: props.match.params.id
     };
 
-    bindAll(this, ['toggleModal', 'handleGetList', 'handleReset']);
+    bindAll(this, ['handleGetList', 'handleReset']);
   }
 
   // 获取屏幕高度
@@ -88,17 +86,11 @@ class Posts extends React.Component {
     getSinglePost({ id }, useCache).then(onSuccess);
   }
 
-  // 图片预览 modal
-  toggleModal() {
-    this.setState(state => ({ modalIsOpen: !state.modalIsOpen }));
-  }
-
   handleReset() {
     return new Promise((resolve, reject) => {
       this.setState({
         isFirstLoad: true,
         posts: [],
-        modalIsOpen: false,
         images: []
       });
 
@@ -120,8 +112,6 @@ class Posts extends React.Component {
   }
 
   render() {
-    const { modalIsOpen } = this.state;
-
     return (
       <div className="blog-container">
         <div className="blog-posts">
@@ -153,20 +143,19 @@ class Posts extends React.Component {
                                 'assets.auracloudapp.com'
                               )
                             };
-                            const images = [image];
-                            const showLightBox = () => {
-                              this.setState({
-                                images,
-                                modalIsOpen: !modalIsOpen
-                              });
-                            };
                             return (
-                              <img
-                                className="post-img"
-                                src={image.src}
-                                alt={props.title}
-                                onClick={showLightBox}
-                              />
+                              <a
+                                href={image.src}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ outline: 'none' }}
+                              >
+                                <img
+                                  className="post-img"
+                                  src={image.src}
+                                  alt={props.title}
+                                />
+                              </a>
                             );
                           }
                         }}
@@ -178,14 +167,6 @@ class Posts extends React.Component {
             </div>
           ) : null}
         </div>
-
-        <ModalGateway>
-          {modalIsOpen ? (
-            <Modal onClose={this.toggleModal}>
-              <Carousel views={this.state.images} />
-            </Modal>
-          ) : null}
-        </ModalGateway>
       </div>
     );
   }

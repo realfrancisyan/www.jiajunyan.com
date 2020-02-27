@@ -9,7 +9,6 @@ import {
   createComment
 } from '../../../api/diary';
 import moment from 'moment';
-import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
 import PlusIcon from './images/plus.png';
 import DiaryPostModal from '../PostModal';
@@ -120,7 +119,6 @@ class DiaryPosts extends React.Component {
       isFirstLoad: true,
       skeleton: [],
       posts: [],
-      modalIsOpen: false,
       images: [],
       postModalIsOpen: false,
       hasNewPost: false,
@@ -137,7 +135,6 @@ class DiaryPosts extends React.Component {
     };
 
     bindAll(this, [
-      'toggleModal',
       'handleTogglePostModal',
       'handleGetList',
       'handleRefresh',
@@ -347,11 +344,6 @@ class DiaryPosts extends React.Component {
       });
   }
 
-  // 图片预览 modal
-  toggleModal() {
-    this.setState(state => ({ modalIsOpen: !state.modalIsOpen }));
-  }
-
   handleDeletePost(post) {
     const r = window.confirm(`确认删除${post.title}？`);
     if (r) {
@@ -454,8 +446,6 @@ class DiaryPosts extends React.Component {
   }
 
   render() {
-    const { modalIsOpen } = this.state;
-
     return (
       <div className="posts-container">
         <SkeletonContainer
@@ -500,20 +490,19 @@ class DiaryPosts extends React.Component {
                                 'assets.auracloudapp.com'
                               )
                             };
-                            const images = [image];
-                            const showLightBox = () => {
-                              this.setState({
-                                images,
-                                modalIsOpen: !modalIsOpen
-                              });
-                            };
                             return (
-                              <img
-                                className="post-img"
-                                src={image.src}
-                                alt={props.title}
-                                onClick={showLightBox}
-                              />
+                              <a
+                                href={image.src}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ outline: 'none' }}
+                              >
+                                <img
+                                  className="post-img"
+                                  src={image.src}
+                                  alt={props.title}
+                                />
+                              </a>
                             );
                           }
                         }}
@@ -549,13 +538,6 @@ class DiaryPosts extends React.Component {
             handleReset={this.handleReset}
           ></DiaryPostModal>
         ) : null}
-        <ModalGateway>
-          {modalIsOpen ? (
-            <Modal onClose={this.toggleModal}>
-              <Carousel views={this.state.images} />
-            </Modal>
-          ) : null}
-        </ModalGateway>
         {this.state.hasNewPost ? (
           <h4 className="new-post" onClick={this.handleRefresh}>
             有新文章
