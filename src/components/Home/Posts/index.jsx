@@ -3,7 +3,6 @@ import './index.scss';
 import Skeleton from '../../Skeleton';
 import { getPosts, deletePost, getTags } from '../../../api/blog';
 import moment from 'moment';
-import Carousel, { Modal, ModalGateway } from 'react-images';
 import bindAll from 'lodash.bindall';
 import PlusIcon from './images/plus.png';
 import PostModal from '../PostModal';
@@ -84,7 +83,6 @@ class Posts extends React.Component {
       posts: [],
       postId: '', // 指定某个 post，用于修改
       isEditPost: false, // 是否修改文章
-      modalIsOpen: false,
       images: [],
       postModalIsOpen: false,
       hasNewPost: false,
@@ -102,7 +100,6 @@ class Posts extends React.Component {
     };
 
     bindAll(this, [
-      'toggleModal',
       'handleTogglePostModal',
       'handleToggleEditPostModal',
       'handleGetList',
@@ -234,11 +231,6 @@ class Posts extends React.Component {
       });
   }
 
-  // 图片预览 modal
-  toggleModal() {
-    this.setState(state => ({ modalIsOpen: !state.modalIsOpen }));
-  }
-
   handleDeletePost(post) {
     const r = window.confirm(`确认删除${post.title}？`);
     if (r) {
@@ -368,8 +360,6 @@ class Posts extends React.Component {
   }
 
   render() {
-    const { modalIsOpen } = this.state;
-
     return (
       <div className="blog-container">
         <div className="blog-posts">
@@ -451,13 +441,6 @@ class Posts extends React.Component {
             postId={this.state.postId}
           ></PostModal>
         ) : null}
-        <ModalGateway>
-          {modalIsOpen ? (
-            <Modal onClose={this.toggleModal}>
-              <Carousel views={this.state.images} />
-            </Modal>
-          ) : null}
-        </ModalGateway>
         {this.state.hasNewPost ? (
           <h4 className="new-post" onClick={this.handleRefresh}>
             有新文章
